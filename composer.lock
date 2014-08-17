@@ -1,0 +1,244 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "981f19eeba8bbd278119152d37203ec4",
+    "packages": [
+        {
+            "name": "aoepeople/composer-installers",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AOEpeople/composer-installers.git",
+                "reference": "9e8c507177fd9d837e3562c7dd71ee35e684e1f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AOEpeople/composer-installers/zipball/9e8c507177fd9d837e3562c7dd71ee35e684e1f4",
+                "reference": "9e8c507177fd9d837e3562c7dd71ee35e684e1f4",
+                "shasum": ""
+            },
+            "replace": {
+                "magento-hackathon/magento-composer-installer": "*"
+            },
+            "type": "composer-installer",
+            "extra": {
+                "class": "Aoepeople\\ComposerInstallers\\Installer"
+            },
+            "autoload": {
+                "psr-0": {
+                    "Aoepeople\\ComposerInstallers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL"
+            ],
+            "authors": [
+                {
+                    "name": "Fabrizio Branca",
+                    "email": "{firstname}.{lastname}@aoe.com"
+                }
+            ],
+            "description": "A simple composer installer",
+            "keywords": [
+                "installer",
+                "magento",
+                "modman"
+            ],
+            "time": "2014-03-07 20:11:42"
+        },
+        {
+            "name": "magento/ce",
+            "version": "1.8.1.0",
+            "dist": {
+                "type": "tar",
+                "url": "http://www.magentocommerce.com/downloads/assets/1.8.1.0/magento-1.8.1.0.tar.gz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "magento-source"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "aoepeople/envsettingstool",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AOEpeople/EnvSettingsTool.git",
+                "reference": "65b4482b4983b45eeea5c5ef743da068fbeecaba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AOEpeople/EnvSettingsTool/zipball/65b4482b4983b45eeea5c5ef743da068fbeecaba",
+                "reference": "65b4482b4983b45eeea5c5ef743da068fbeecaba",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "bin": [
+                "value.php",
+                "apply.php",
+                "dryRun.php"
+            ],
+            "type": "library",
+            "license": [
+                "GPL v3"
+            ],
+            "authors": [
+                {
+                    "name": "Fabrizio Branca"
+                },
+                {
+                    "name": "Daniel Pötzinger"
+                }
+            ],
+            "description": "Environment Settings Tool",
+            "homepage": "https://github.com/AOEpeople/EnvSettingsTool",
+            "support": {
+                "source": "https://github.com/AOEpeople/EnvSettingsTool/tree/v1.1.0"
+            },
+            "time": "2014-04-08 21:05:30"
+        },
+        {
+            "name": "fbrnc/Aoe_Profiler",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fbrnc/Aoe_Profiler.git",
+                "reference": "384b6de6443b383fcc62ed4c4f76604e2c256c51"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fbrnc/Aoe_Profiler/zipball/384b6de6443b383fcc62ed4c4f76604e2c256c51",
+                "reference": "384b6de6443b383fcc62ed4c4f76604e2c256c51",
+                "shasum": ""
+            },
+            "require": {
+                "magento-hackathon/magento-composer-installer": "*"
+            },
+            "type": "magento-module",
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Fabrizio Branca",
+                    "email": "mail@{firstname}-{lastname}.de"
+                }
+            ],
+            "description": "Magento Profiler",
+            "homepage": "http://www.fabrizio-branca.de/magento-profiler.html",
+            "support": {
+                "source": "https://github.com/fbrnc/Aoe_Profiler/tree/v0.3.0",
+                "issues": "https://github.com/fbrnc/Aoe_Profiler/issues"
+            },
+            "time": "2013-10-27 00:28:01"
+        },
+        {
+            "name": "fbrnc/Aoe_TemplateHints",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fbrnc/Aoe_TemplateHints.git",
+                "reference": "b04b67f309608164c0e628aa920646a7f7c2b71e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fbrnc/Aoe_TemplateHints/zipball/b04b67f309608164c0e628aa920646a7f7c2b71e",
+                "reference": "b04b67f309608164c0e628aa920646a7f7c2b71e",
+                "shasum": ""
+            },
+            "require": {
+                "magento-hackathon/magento-composer-installer": "*"
+            },
+            "type": "magento-module",
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Fabrizio Branca",
+                    "email": "mail@{firstname}-{lastname}.de"
+                }
+            ],
+            "description": "Advanced Template Hints for Magento",
+            "homepage": "http://www.fabrizio-branca.de/magento-advanced-template-hints-20.html",
+            "support": {
+                "source": "https://github.com/fbrnc/Aoe_TemplateHints/tree/master",
+                "issues": "https://github.com/fbrnc/Aoe_TemplateHints/issues"
+            },
+            "time": "2013-06-12 04:04:11"
+        },
+        {
+            "name": "jacquesbh/installer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmengler/installer.git",
+                "reference": "ef7fb7c691de136496fcf442317a87afceba7246"
+            },
+            "bin": [
+                "bin/Installer"
+            ],
+            "type": "library",
+            "license": [
+                "GPL v3"
+            ],
+            "authors": [
+                {
+                    "name": "Jacques Bodin-Hullin"
+                }
+            ],
+            "description": "PHP command line tool for Magento extension development and scaffolding",
+            "keywords": [
+                "Magento",
+                "installer"
+            ],
+            "time": "2014-08-05 20:23:18"
+        },
+        {
+            "name": "sse/formfiller",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmengler/FormFiller.git",
+                "reference": "ecacd30344cdff2c88320e5093df3983db6af2f3"
+            },
+            "require": {
+                "magento-hackathon/magento-composer-installer": "*"
+            },
+            "type": "magento-module",
+            "license": [
+                "osl-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Fabian Schmengler",
+                    "email": "fabian@schmengler-se.de"
+                }
+            ],
+            "description": "Development tool: Pre-fill forms with random data",
+            "homepage": "http://www.schmengler-se.de/",
+            "time": "2014-08-04 20:01:08"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "aoepeople/composer-installers": 20,
+        "fbrnc/aoe_profiler": 20,
+        "fbrnc/aoe_templatehints": 20,
+        "sse/formfiller": 20,
+        "jacquesbh/installer": 20
+    },
+    "prefer-stable": false,
+    "platform": {
+        "php": ">=5.3.0"
+    },
+    "platform-dev": []
+}

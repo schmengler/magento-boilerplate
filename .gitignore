@@ -1,0 +1,9 @@
+/.buildpath
+/.project
+/.settings
+/.vagrant
+/.modman
+/www
+/vendor
+/var
+/deploy/*

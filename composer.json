@@ -1,0 +1,68 @@
+{
+    "config": {
+        "bin-dir": "/usr/local/bin",
+		"vendor-dir": "vendor",
+		"cache-dir": "/dev/shm"
+    },
+    "require": {
+        "php": ">=5.3.0",
+		"magento/ce": "1.8.1.0",
+		"aoepeople/composer-installers": "dev-master"
+    },
+    "require-dev": {
+ 		"fbrnc/aoe_profiler": "dev-master",
+		"fbrnc/aoe_templatehints": "dev-master",
+		"aoepeople/envsettingstool": "~1.0",
+        "sse/formfiller": "dev-master",
+		"jacquesbh/installer": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "": [
+                "htdocs/app",
+                "htdocs/app/code/local",
+                "htdocs/app/code/community",
+                "htdocs/app/code/core",
+                "htdocs/lib"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+		},
+		{
+			"type": "package",
+			"package": {
+				"name": "magento/ce",
+				"version": "1.8.1.0",
+				"type": "magento-source",
+				"dist": {
+					"url": "http://www.magentocommerce.com/downloads/assets/1.8.1.0/magento-1.8.1.0.tar.gz",
+					"type": "tar"
+				}
+			}
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/aoepeople/EnvSettingsTool"
+		},
+        {
+            "type": "git",
+            "url": "https://github.com/schmengler/FormFiller.git"
+        },
+		{
+			"type": "git",
+			"url": "https://github.com/schmengler/installer.git"
+		}
+	],
+    "extra":{
+        "magento-root-dir": "/home/vagrant/www/",
+		"installer-paths": {
+			"www/" : [ "type:magento-source" ],
+			".modman/{$name}/" : [ "type:magento-module" ]
+		}
+    }
+}
