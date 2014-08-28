@@ -26,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     rsync__exclude: [".git/", ".settings/"],
 	rsync_args: ["--verbose", "--archive", "--delete", "-z", "--copy-links", "--omit-dir-times"]
   config.vm.synced_folder "./.modman", "/home/vagrant/.modman", type: "rsync",
-    rsync__exclude: [".git/"],
+    rsync__exclude: [".git/", "/src/"],
 	rsync_args: ["--verbose", "--archive", "--delete", "-z", "--copy-links", "--omit-dir-times"]
   config.vm.synced_folder "./vendor", "/home/vagrant/vendor", type: "rsync",
     rsync__exclude: [".git/"],
