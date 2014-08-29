@@ -2,9 +2,11 @@
 /.project
 /.settings
 /.vagrant
-/.modman
+/.modman/*
+!/.modman/.gitkeep
 /www
-/vendor
+/vendor/*
+!/vendor/.gitkeep
 /var/*
 !/var/logs
 /var/logs/*
