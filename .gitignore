@@ -5,5 +5,8 @@
 /.modman
 /www
 /vendor
-/var
+/var/*
+!/var/logs
+/var/logs/*
+!/var/logs/.gitkeep
 /deploy/*
