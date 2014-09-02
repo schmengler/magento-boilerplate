@@ -64,5 +64,9 @@
 			"www/" : [ "type:magento-source" ],
 			".modman/{$name}/" : [ "type:magento-module" ]
 		}
+    },
+    "scripts":{
+        "post-install-cmd": "cd /home/vagrant && modman deploy-all --force",
+        "post-update-cmd": "cd /home/vagrant && modman deploy-all --force"
     }
 }
