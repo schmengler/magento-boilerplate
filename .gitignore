@@ -3,7 +3,7 @@
 /.settings
 /.vagrant
 /.modman/*
-!/.modman/.gitkeep
+!/.modman/.basedir
 /www
 /vendor/*
 !/vendor/.gitkeep
