@@ -19,7 +19,7 @@ while true; do
         [Hh]* ) kill_rsync_auto; echo "Halt Vagrantbox..."; vagrant halt; break;;
         [Ss]* ) kill_rsync_auto; echo "Suspend Vagrantbox..."; vagrant suspend; break;;
         [Ll]* ) echo "Connecting to Vagrantbox..."; vagrant ssh; continue;;
-		[Rr]* ) kill_rsync_auto; echo "Restart rsync-auto..."; start_rsync_auto; continue;
+		[Rr]* ) kill_rsync_auto; echo "Restart rsync-auto..."; start_rsync_auto; continue;;
         * ) echo "Not recognized command $hs.";;
     esac
 done
