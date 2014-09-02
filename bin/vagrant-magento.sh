@@ -14,7 +14,7 @@ mkdir www
 # Extensions from Composer will be deployed after Magento has been installed
 cd /vagrant
 modman init www
-composer install --dev --prefer-dist --no-interaction
+composer install --dev --prefer-dist --no-interaction --no-scripts
 cd ~
 
 # link project modman packages (src/modman imports others)
@@ -33,6 +33,11 @@ n98-magerun install --dbHost="localhost" --dbUser="root" --dbPass="" --dbName="m
 # Now after Magento has been installed, deploy all additional modules and run setup scripts
 modman deploy-all --force
 n98-magerun sys:setup:run
+
+# Set up PHPUnit
+cd www/shell
+mysqladmin -uroot create magento_unit_tests
+php ecomdev-phpunit.php -a magento-config --db-name magento_unit_tests --base-url http://magento.local/
 
 # Some devbox specific Magento settings
 n98-magerun admin:user:create fschmengler fschmengler@sgh-it.eu test123 Fabian Schmengler

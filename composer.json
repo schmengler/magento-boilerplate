@@ -14,7 +14,8 @@
 		"fbrnc/aoe_templatehints": "dev-master",
 		"aoepeople/envsettingstool": "~1.0",
         "sse/formfiller": "dev-master",
-		"jacquesbh/installer": "dev-master"
+		"jacquesbh/installer": "dev-master",
+		"ecomdev/ecomdev_phpunit": "*"
     },
     "autoload": {
         "psr-0": {
