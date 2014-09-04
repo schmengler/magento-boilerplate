@@ -14,7 +14,7 @@ apt-get update
 
 # Required packages
 apt-get -q -y install mysql-server
-apt-get install -y apache2 libnss-mdns curl git libssl0.9.8 sendmail
+apt-get install -y apache2 libnss-mdns curl git libssl0.9.8 sendmail language-pack-de-base
 apt-get install -y php5-dev libapache2-mod-php5 php5-cli php5-curl php5-mcrypt php5-gd php5-mysql php-pear php5-tidy
 
 # Zend Debug
