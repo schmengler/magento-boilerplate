@@ -14,13 +14,17 @@ apt-get update
 
 # Required packages
 apt-get -q -y install mysql-server
-apt-get install -y apache2 libnss-mdns curl git libssl0.9.8
+apt-get install -y apache2 libnss-mdns curl git libssl0.9.8 sendmail
 apt-get install -y php5-dev libapache2-mod-php5 php5-cli php5-curl php5-mcrypt php5-gd php5-mysql php-pear php5-tidy
 
 # Zend Debug
 /vagrant/bin/vagrant-zenddebugger.sh
 cp /vagrant/conf/php/zend_debugger.ini /etc/php5/mods-available/
 php5enmod zend_debugger/30
+
+#Set up Git interface: use colors, add "git tree" command
+git config --global color.ui true
+git config --global alias.tree "log --oneline --decorate --all --graph"
 
 # Composer
 curl -sS https://getcomposer.org/installer | php
@@ -46,6 +50,15 @@ usermod -a -G www-data vagrant
 
 # zend debug dummy file
 cp /vagrant/conf/php/dummy.php /home/vagrant/www/
+
+# MySQL configuration, cannot be linked because MySQL refuses to load world-writable configuration
+cp -f /vagrant/conf/my.cnf /etc/mysql/my.cnf
+service mysql restart
+# Allow access from host
+mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;"
+
+# Set locale
+ln -fs /vagrant/conf/locale /etc/default/locale
 
 # Publish; Note that document root /home/vagrant/www is on the native virtual filesystem, the linked modules will be in an rsync'ed shared folder (one direction: host=>guest)
 ln -fs /vagrant/conf/vhost.conf /etc/apache2/sites-available/vhost.conf

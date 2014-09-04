@@ -10,10 +10,9 @@ git config --global jbh-installer.company-url "http://www.sgh-it.eu/"
 cd ~
 mkdir www
 
-# Set up modman and install dependencies from composer.
+#Install dependencies from composer.
 # Extensions from Composer will be deployed after Magento has been installed
 cd /vagrant
-modman init www
 composer install --dev --prefer-dist --no-interaction --no-scripts
 cd ~
 
@@ -23,12 +22,17 @@ modman deploy src --force
 
 # Use n98-magerun to set up Magento (database and local.xml)
 # CHANGE BASE URL AND MAGENTO VERSION HERE:
-# use --noDownload if Magento core is deployed with modman
+# use --noDownload if Magento core is deployed with modman or composer. Remove the line if there already is a configured Magento installation
 n98-magerun install --dbHost="localhost" --dbUser="root" --dbPass="" --dbName="magento" --installSampleData=yes --useDefaultConfigParams=yes --magentoVersionByName="magento-ce-1.8.1.0" --installationFolder="www" --baseUrl="http://magento.local/"
 
 # link local.xml, this overwrites the generated local.xml from the install script
+ln -s /vagrant/conf/local.xml /home/vagrant/www/app/etc/local.xml
+ln -s /vagrant/conf/local.xml.phpunit /home/vagrant/www/app/etc/local.xml.phpunit
 # Uncomment if you deployed a file app/etc/local.xml.devbox
 #ln -fs local.xml.devbox ~/www/app/etc/local.xml 
+
+# Write permissions in media
+chmod -R 0770 /home/vagrant/www/media
 
 # Now after Magento has been installed, deploy all additional modules and run setup scripts
 modman deploy-all --force
