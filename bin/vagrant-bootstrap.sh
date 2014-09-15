@@ -22,6 +22,19 @@ apt-get install -y php5-dev libapache2-mod-php5 php5-cli php5-curl php5-mcrypt p
 cp /vagrant/conf/php/zend_debugger.ini /etc/php5/mods-available/
 php5enmod zend_debugger/30
 
+# Install Ruby 2.1 via RVM
+curl -L get.rvm.io | bash -s stable
+source ~/.rvm/scripts/rvm
+rvm requirements
+rvm install 2.1.0
+rvm --default use 2.1.0
+
+# Mailcatcher to test emails (needs latest Ruby)
+apt-get install -y libsqlite3-dev
+gem install mailcatcher
+mailcatcher --ip=0.0.0.0 # see https://github.com/sj26/mailcatcher/issues/89
+cp /vagrant/conf/php/mailcatcher.ini /etc/php5/apache2/conf.d/
+
 #Set up Git interface: use colors, add "git tree" command
 git config --global color.ui true
 git config --global alias.tree "log --oneline --decorate --all --graph"
