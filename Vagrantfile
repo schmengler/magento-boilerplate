@@ -21,6 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :shell, :path => "bin/vagrant-bootstrap.sh"
   config.vm.provision "shell", inline: "service apache2 restart", run: "always"
+  config.vm.provision "shell", inline: "mailcatcher --ip=0.0.0.0", run: "always"
   
   config.vm.synced_folder "./src", "/home/vagrant/src", type: "rsync",
     rsync__exclude: [".git/", ".settings/"],
