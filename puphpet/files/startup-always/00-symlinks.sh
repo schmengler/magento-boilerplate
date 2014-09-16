@@ -1,0 +1,1 @@
+ln -fs /home/vagrant/www /var/www

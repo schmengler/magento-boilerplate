@@ -1,0 +1,1 @@
+chown -R www-data:www-data /home/vagrant/www /home/vagrant/vendor /home/vagrant/.modman
