@@ -2,8 +2,10 @@
 # Change these values according to your needs:
 #
 DOMAIN=magento.local
-MAGENTO_VERSION=magento-ce-1.9.1.0
+MAGENTO_VERSION=magento-ce-1.9.0.1
 
+
+mkdir /home/vagrant/www
 
 # Install dependencies from composer.
 # Extensions from Composer will be deployed after Magento has been installed
@@ -16,7 +18,6 @@ cd /home/vagrant
 modman link ./src
 modman deploy src --force
 
-mkdir /home/vagrant/www
 # Use n98-magerun to set up Magento (database and local.xml)
 # CHANGE BASE URL AND MAGENTO VERSION HERE:
 # use --noDownload if Magento core is deployed with modman or composer.
