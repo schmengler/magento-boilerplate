@@ -123,7 +123,7 @@ apache:
             servername: magento.local
             serveraliases:
                 - www.magento.local
-            docroot: /var/www
+            docroot: /var/www/magento.local
             port: '80'
             setenv:
                 - 'MAGE_IS_DEVELOPER_MODE 1'
