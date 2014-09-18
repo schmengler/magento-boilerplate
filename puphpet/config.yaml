@@ -37,12 +37,13 @@ vagrantfile-local:
                     args:
                         - '-avzO'
                         - '--delete'
-                        - '--chown=www-data:www-data'
-                        - '--chmod=D775,F664'
+                        - '--chmod=Dug=rwx,o=rx,Fug=rw,o=r'
                     exclude:
                         - .git/
                         - /src
                     auto: 'true'
+                    owner: 'www-data'
+                    group: 'www-data'
             7OsKjQpGX7UE:
                 source: ./vendor
                 target: /home/vagrant/vendor
@@ -51,11 +52,12 @@ vagrantfile-local:
                     args:
                         - '-avzO'
                         - '--delete'
-                        - '--chown=www-data:www-data'
-                        - '--chmod=D775,F664'
+                        - '--chmod=Dug=rwx,o=rx,Fug=rw,o=r'
                     exclude:
                         - .git/
-                    auto: 'false'
+                    auto: 'true'
+                    owner: 'www-data'
+                    group: 'www-data'
             C2fAKjNZJRgG:
                 source: ./src
                 target: /home/vagrant/src
@@ -64,11 +66,12 @@ vagrantfile-local:
                     args:
                         - '-avzO'
                         - '--delete'
-                        - '--chown=www-data:www-data'
-                        - '--chmod=D775,F664'
+                        - '--chmod=Dug=rwx,o=rx,Fug=rw,o=r'
                     exclude:
                         - .git/
-                    auto: 'false'
+                    auto: 'true'
+                    owner: 'www-data'
+                    group: 'www-data'
         usable_port_range:
             start: 10200
             stop: 10500
