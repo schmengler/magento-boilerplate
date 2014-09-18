@@ -37,9 +37,8 @@ vagrantfile-local:
                     args:
                         - '-avzO'
                         - '--delete'
-                        - '--no-o'
-                        - '--no-g'
-                        - '--no-p'
+                        - '--chown=www-data:www-data'
+                        - '--chmod=D775,F664'
                     exclude:
                         - .git/
                         - /src
@@ -52,9 +51,8 @@ vagrantfile-local:
                     args:
                         - '-avzO'
                         - '--delete'
-                        - '--no-o'
-                        - '--no-g'
-                        - '--no-p'
+                        - '--chown=www-data:www-data'
+                        - '--chmod=D775,F664'
                     exclude:
                         - .git/
                     auto: 'false'
@@ -66,9 +64,8 @@ vagrantfile-local:
                     args:
                         - '-avzO'
                         - '--delete'
-                        - '--no-o'
-                        - '--no-g'
-                        - '--no-p'
+                        - '--chown=www-data:www-data'
+                        - '--chmod=D775,F664'
                     exclude:
                         - .git/
                     auto: 'false'
