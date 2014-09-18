@@ -82,7 +82,7 @@ vagrantfile-local:
         username: vagrant
         guest_port: null
         keep_alive: true
-        forward_agent: false
+        forward_agent: true
         forward_x11: false
         shell: 'bash -l'
     vagrant:
