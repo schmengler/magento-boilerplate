@@ -1,8 +1,14 @@
+#!/bin/sh
 #
 # Change these values according to your needs:
 #
 DOMAIN=magento.local
 MAGENTO_VERSION=magento-ce-1.9.0.1
+
+# always run this script as vagrant user
+if [ "$USER" neq "vagrant" ]; then
+	sudo -u vagrant -H sh -c "sh $0"
+fi
 
 
 mkdir /home/vagrant/www
@@ -19,7 +25,6 @@ modman link ./src
 modman deploy src --force
 
 # Use n98-magerun to set up Magento (database and local.xml)
-# CHANGE BASE URL AND MAGENTO VERSION HERE:
 # use --noDownload if Magento core is deployed with modman or composer.
 # Remove the line if there already is a configured Magento installation
 n98-magerun install --dbHost="localhost" --dbUser="magento" --dbPass="root" --dbName="magento" --installSampleData=no --useDefaultConfigParams=yes --magentoVersionByName="$MAGENTO_VERSION" --installationFolder="www" --baseUrl="http://$DOMAIN/"
