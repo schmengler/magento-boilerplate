@@ -6,8 +6,9 @@ DOMAIN=magento.local
 MAGENTO_VERSION=magento-ce-1.9.0.1
 
 # always run this script as vagrant user
-if [ "$USER" neq "vagrant" ]; then
+if [ "$USER" != "vagrant" ]; then
 	sudo -u vagrant -H sh -c "sh $0"
+	exit
 fi
 
 
