@@ -106,7 +106,7 @@ apache:
     settings:
         user: www-data
         group: www-data
-        default_vhost: true
+        default_vhost: false
         manage_user: false
         manage_group: false
         sendfile: 0
@@ -135,6 +135,22 @@ apache:
                 - MultiViews
             engine: php
             custom_fragment: ''
+        KMQf46Yg8sej:
+            servername: magento.local
+            serveraliases:
+                - www.magento.local
+            docroot: /var/www/magento.local
+            port: '443'
+            setenv:
+                - 'MAGE_IS_DEVELOPER_MODE 1'
+            override:
+                - All
+            options:
+                - Indexes
+                - FollowSymLinks
+                - MultiViews
+            engine: php
+            custom_fragment: ''
             ssl: '1'
             ssl_cert: ''
             ssl_key: ''
@@ -143,27 +159,6 @@ apache:
     mod_pagespeed: 0
 nginx:
     install: '0'
-    settings:
-        default_vhost: 1
-        proxy_buffer_size: 128k
-        proxy_buffers: '4 256k'
-    vhosts:
-        MpNMJWO0VXir:
-            server_name: awesome.dev
-            server_aliases:
-                - www.awesome.dev
-            www_root: /var/www/awesome
-            listen_port: '80'
-            location: \.php$
-            index_files:
-                - index.html
-                - index.htm
-                - index.php
-            envvars:
-                - 'APP_ENV dev'
-            engine: php
-            ssl_cert: ''
-            ssl_key: ''
 php:
     install: '1'
     version: '55'
