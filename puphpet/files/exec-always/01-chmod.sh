@@ -1,0 +1,1 @@
+chmod 0777 /usr/local/bin

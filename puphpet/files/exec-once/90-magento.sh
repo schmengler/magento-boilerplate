@@ -17,6 +17,8 @@ mkdir /home/vagrant/www
 # Install dependencies from composer.
 # Extensions from Composer will be deployed after Magento has been installed
 # --no-scripts prevents modman deploy
+# in the default composer.json /usr/local/bin is specified as bin directory, so it has to be writable
+chmod 0777 /usr/local/bin
 cd /vagrant
 composer install --dev --prefer-dist --no-interaction --no-scripts
 
@@ -36,7 +38,7 @@ n98-magerun sys:setup:run
 
 # Set up PHPUnit
 cd /home/vagrant/www/shell
-mysqladmin -uroot create magento_unit_tests
+mysqladmin -uroot -proot create magento_unit_tests
 php ecomdev-phpunit.php -a magento-config --db-name magento_unit_tests --base-url http://$DOMAIN/
 
 # Link local.xml from /etc, this overwrites the generated local.xml
