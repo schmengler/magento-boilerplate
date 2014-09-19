@@ -7,3 +7,4 @@
 /var/*
 !/var/.gitkeep
 /deploy/*
+/puphpet/files/dot/ssh
