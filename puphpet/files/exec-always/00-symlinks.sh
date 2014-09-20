@@ -1,2 +1,2 @@
-rm -rf /var/www/magento.local
-[ -d /home/vagrant/www ] && ln -fs /home/vagrant/www /var/www/magento.local
+rm -rf /var/www/`cat /vagrant/etc/domain`
+[ -d /home/vagrant/www ] && ln -fs /home/vagrant/www /var/www/`cat /vagrant/etc/domain`

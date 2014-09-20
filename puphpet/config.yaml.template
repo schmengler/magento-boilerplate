@@ -3,12 +3,12 @@ vagrantfile-local:
     vm:
         box: puphpet/ubuntu1404-x64
         box_url: puphpet/ubuntu1404-x64
-        hostname: ''
+        hostname: '{DOMAIN}'
         memory: '1024'
         cpus: '1'
         chosen_provider: virtualbox
         network:
-            private_network: 192.168.56.101
+            private_network: {IP}
             forwarded_port: {  }
         post_up_message: ''
         provider:
@@ -120,10 +120,10 @@ apache:
         - expires
     vhosts:
         IMQf46Yg8sej:
-            servername: magento.local
+            servername: {DOMAIN}
             serveraliases:
-                - www.magento.local
-            docroot: /var/www/magento.local
+                - www.{DOMAIN}
+            docroot: /var/www/{DOMAIN}
             port: '80'
             setenv:
                 - 'MAGE_IS_DEVELOPER_MODE 1'
@@ -136,10 +136,10 @@ apache:
             engine: php
             custom_fragment: ''
         KMQf46Yg8sej:
-            servername: magento.local
+            servername: {DOMAIN}
             serveraliases:
-                - www.magento.local
-            docroot: /var/www/magento.local
+                - www.{DOMAIN}
+            docroot: /var/www/{DOMAIN}
             port: '443'
             setenv:
                 - 'MAGE_IS_DEVELOPER_MODE 1'

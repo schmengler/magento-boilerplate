@@ -1,4 +1,7 @@
 #!/bin/sh
+write_config_yaml() {
+	sed -e "s/{DOMAIN}/`cat etc/domain`/" -e "s/{IP}/$ip/" puphpet/config.yaml.template > puphpet/config.yaml
+}
 start_rsync_auto() {
 	echo -e "\x1b[34m\x1b[1mRsync shared folders...\x1b[0m"
 	vagrant rsync-auto &
@@ -8,6 +11,57 @@ kill_rsync_auto() {
     echo -e "\x1b[34m\x1b[1mKill rsync-auto process...\x1b[0m"
     kill -INT $!
 }
+ask_to_continue() {
+	printf "\x1b[1mContinue? [y/n] \x1b[0m"
+	while true; do
+		read -e yn
+		case $yn in
+			[Yy]* ) break;;
+			[Nn]* ) exit;;
+		esac
+	done;
+}
+
+if [ ! -f puphpet/config.yaml ]; then
+	cat puphpet/shell/ascii-art/vagrant-logo.txt
+	echo ""
+	echo ""
+	echo -e "\x1b[1mWelcome! This is the first start, please choose a domain and IP for your box:\x1b[0m"
+	echo ""
+	domain=#
+	while [[ ! $domain =~ ^[a-z0-9.-]*$ ]]; do
+		echo -e "\x1b[33mDomain (default: magento.local)\x1b[32m"
+		read -ep ">" domain
+	done
+	if [ "$domain" == "" ]; then
+		domain=magento.local
+	fi
+	while [[ ! $ip =~ ^[0-9]{1,3}$ ]] || [[ ! $ip -gt 1 ]]; do
+		echo -e "\x1b[33mIP (set last parts > 1)\x1b[32m"
+		read -ep "> 192.168.56." ip
+	done
+	ip="192.168.56.$ip"
+	echo -e "\x1b[0;1mPlease review your configuration:\x1b[0m"
+	echo ""
+	echo -e "\tDomain: \x1b[32m$domain\x1b[0m"
+	echo -e "\tIP: \x1b[32m$ip\x1b[0m"
+	echo ""
+	ask_to_continue;
+	echo $domain > etc/domain
+	write_config_yaml
+	echo ""
+	echo -e "\x1b[32mconfig.yaml has been generated. Before we create the box, check the following prerequisites:\x1b[0m"
+	echo ""
+	echo -e " \x1b[32m►\x1b[0m Specify third party extensions in composer.json. Some recommended default extensions are already defined there. Remove them at will.\n"
+	echo -e " \x1b[32m►\x1b[0m If you have dependencies on private repositories, copy your SSH private key to 'puphpet/files/dot/.ssh/my_id_rsa'\n"
+	echo -e " \x1b[32m►\x1b[0m If you need to specify the Magento version or use code from an existing installation, change 'puphpet/files/exec-once/90-magento.sh' according to the comments\n"
+	echo -e " \x1b[32m►\x1b[0m If you need additional packages for Linux/PHP/PECL/Ruby/Node, add them to 'puphpet/config.yaml'\n"
+	echo ""
+	echo -e "\x1b[1;33mIf you continue witout any changes, a new Magento CE 1.9 will be installed with some default recommended extensions.\x1b[0m"
+	echo -e "\x1b[1;33mIf you do not continue now, the next time you run $0, the box will be created immediately.\x1b[0m"
+	echo ""
+	ask_to_continue;
+fi
 
 echo -e "\x1b[34m\x1b[1mStarting Vagrantbox...\x1b[0m"
 vagrant up || exit

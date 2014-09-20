@@ -25,4 +25,4 @@
 #
 # m h  dom mon dow   command
 
-*/1 *   *   *   *   /var/www/magento.local/cron.sh
+*/1 *   *   *   *   /var/www/{DOMAIN}/cron.sh

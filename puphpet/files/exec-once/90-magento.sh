@@ -2,7 +2,7 @@
 #
 # Change these values according to your needs:
 #
-DOMAIN=magento.local
+DOMAIN=`cat /vagrant/etc/domain`
 MAGENTO_VERSION=magento-ce-1.9.0.1
 
 # always run this script as vagrant user
