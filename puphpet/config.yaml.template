@@ -180,7 +180,6 @@ php:
         display_errors: On
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
-        sendmail_path: '/usr/bin/env /home/vagrant/.rvm/gems/ruby-2.1.0/bin/catchmail'
     timezone: Europe/Berlin
     mod_php: 0
 hhvm:
