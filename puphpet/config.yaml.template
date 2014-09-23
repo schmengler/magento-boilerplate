@@ -94,10 +94,7 @@ server:
         - libnss-mdns
         - curl
         - git
-        - libssl0.9.8
-        - sendmail
         - language-pack-de-base
-        - libsqlite3-dev
 firewall:
     install: '1'
     rules: null
@@ -180,7 +177,6 @@ php:
         display_errors: On
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
-        sendmail_path: '/usr/bin/env /home/vagrant/.rvm/gems/ruby-2.1.0/bin/catchmail'
     timezone: Europe/Berlin
     mod_php: 0
 hhvm:
@@ -252,7 +248,7 @@ mariadb:
     databases: {  }
     version: '10.0'
 sqlite:
-    install: '0'
+    install: '1'
     adminer: 0
     databases: {  }
 mongodb:
@@ -262,7 +258,7 @@ mongodb:
         port: '27017'
     databases: {  }
 redis:
-    install: '0'
+    install: '1'
     settings:
         conf_port: '6379'
 mailcatcher:
