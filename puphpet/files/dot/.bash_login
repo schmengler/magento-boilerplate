@@ -1,0 +1,7 @@
+# dot files are copied for all users but we don't want to display the login message for root
+# .profile must be sourced explicitly because it is not used if .bash_login exists.
+
+if [ "$USER" = "vagrant" ]; then
+	source ~/.profile
+	cat /vagrant/README.NFO | sed s/{DOMAIN}/`cat /vagrant/etc/domain`/
+fi

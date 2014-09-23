@@ -1,0 +1,9 @@
+[1m________________________________________________________________________________
+
+ Welcome to the [0;44m(SGH)[0m_[0;1m Magento Vagrantbox for [32m{DOMAIN}[0;1m
+
+ The project directory is mounted at [32m/vagrant/[0;1m	- Run composer from there.
+ Magento is deployed to              [32m~/www[0;1m	- Run PHPUnit from there.
+________________________________________________________________________________
+
+[0m
