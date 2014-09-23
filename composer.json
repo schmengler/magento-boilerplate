@@ -1,6 +1,6 @@
 {
     "config": {
-        "bin-dir": "/usr/local/bin",
+        "bin-dir": "~/bin",
 		"vendor-dir": "vendor",
 		"cache-dir": "/dev/shm"
     },
