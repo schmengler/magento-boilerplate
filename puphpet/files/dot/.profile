@@ -10,6 +10,7 @@
 
 # load SSH agent and add keys
 if [ -z "$SSH_AUTH_SOCK" ] ; then
+  chmod 0600 ~/.ssh/*
   eval `ssh-agent -s`
   ssh-add ~/.ssh/*_id_rsa
 fi

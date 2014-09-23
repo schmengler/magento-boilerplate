@@ -23,8 +23,6 @@ mkdir /home/vagrant/www
 # Install dependencies from composer.
 # Extensions from Composer will be deployed after Magento has been installed
 # --no-scripts prevents modman deploy
-# in the default composer.json /usr/local/bin is specified as bin directory, so it has to be writable
-chmod 0777 /usr/local/bin
 cd /vagrant
 composer install --dev --prefer-dist --no-interaction --no-scripts
 
