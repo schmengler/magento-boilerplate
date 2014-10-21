@@ -43,7 +43,8 @@ n98-magerun sys:setup:run
 # Set up PHPUnit
 cd /home/vagrant/www/shell
 mysqladmin -uroot -proot create magento_unit_tests
-php ecomdev-phpunit.php -a magento-config --db-name magento_unit_tests --base-url http://$DOMAIN/
+php ecomdev-phpunit.php -a install
+php ecomdev-phpunit.php -a magento-config --db-name magento_unit_tests --db-user root --base-url http://$DOMAIN/
 
 # Link local.xml from /etc, this overwrites the generated local.xml
 # from the install script. If it does not exist, the generated file gets copied to /etc first
