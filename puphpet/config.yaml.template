@@ -178,7 +178,7 @@ php:
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
     timezone: Europe/Berlin
-    mod_php: 0
+    mod_php: 1
 hhvm:
     install: '0'
     nightly: 0
