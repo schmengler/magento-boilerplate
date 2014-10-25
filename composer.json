@@ -12,12 +12,11 @@
 		"aoepeople/composer-installers": "dev-master",
 		"avstudnitz/scopehint": "dev-master",
 		"avstudnitz/admin-notification-advanced": "dev-master",
-		"fbrnc/aoe_managestores": "dev-master",
 		"tim-reynolds/magento-qconfig": "dev-master"
     },
     "require-dev": {
  		"fbrnc/aoe_profiler": "dev-master",
-		"fbrnc/aoe_templatehints": "dev-master",
+		"aoepeople/aoe_templatehints": "dev-master",
 		"aoepeople/envsettingstool": "~1.0",
         "sse/formfiller": "dev-master",
 		"jacquesbh/installer": "dev-master",
