@@ -94,7 +94,6 @@ server:
         - libnss-mdns
         - curl
         - git
-        - language-pack-de-base
 firewall:
     install: '1'
     rules: null
