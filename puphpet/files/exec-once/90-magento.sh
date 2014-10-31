@@ -34,7 +34,7 @@ modman deploy src --force
 # Use n98-magerun to set up Magento (database and local.xml)
 # use --noDownload if Magento core is deployed with modman or composer.
 # Remove the line if there already is a configured Magento installation
-n98-magerun install --dbHost="localhost" --dbUser="magento" --dbPass="root" --dbName="magento" --installSampleData=no --useDefaultConfigParams=yes --magentoVersionByName="$MAGENTO_VERSION" --installationFolder="www" --baseUrl="http://$DOMAIN/"
+n98-magerun install --noDownload --dbHost="localhost" --dbUser="magento" --dbPass="root" --dbName="magento" --installSampleData=no --useDefaultConfigParams=yes --magentoVersionByName="$MAGENTO_VERSION" --installationFolder="www" --baseUrl="http://$DOMAIN/"
 
 # Now after Magento has been installed, deploy all additional modules and run setup scripts
 modman deploy-all --force
