@@ -1,0 +1,5 @@
+# files/db from live
+/live
+
+# uncompressed sql files
+*.sql
