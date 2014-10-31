@@ -1,6 +1,21 @@
 #!/bin/sh
+
+#
+# Specify a configuration template here. Currently available
+#
+# - config-modman.yaml: default structure with composer+modman
+# - config-allinone.yaml: complete Magento installation in one directory (specified by $src variable)
+#
+# TODO: interactive menu
+# TODO: different scripts depending on template
+#
+configtemplate=config-modman.yaml
+src=./src
+
+	
+	
 write_config_yaml() {
-	sed -e "s/{DOMAIN}/`cat etc/domain`/" -e "s/{IP}/$ip/" puphpet/config.yaml.template > puphpet/config.yaml
+	sed -e "s/{DOMAIN}/`cat etc/domain`/" -e "s/{IP}/$ip/" -e "s/{SOURCE_DIR}/$src/" puphpet/templates/$configtemplate > puphpet/config.yaml
 }
 start_rsync_auto() {
 	echo -e "\x1b[34m\x1b[1mRsync shared folders...\x1b[0m"
