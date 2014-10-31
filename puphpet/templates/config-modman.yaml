@@ -201,7 +201,6 @@ xdebug:
         xdebug.remote_handler: 'dbgp'
         xdebug.remote_port: '9000'
         xdebug.idekey: 'PHPSTORM' #remove if you need dynamic keys (i.e. for multiple sessions)
-        xdebug.file_link_format: 'javascript:var rq = new XMLHttpRequest(); rq.open("GET", \http://10.0.2.2:8091?message=%f:%l", true); rq.send(null);' # for PhpStorm plugin: http://plugins.jetbrains.com/plugin/6027
 xhprof:
     install: '0'
 drush:
