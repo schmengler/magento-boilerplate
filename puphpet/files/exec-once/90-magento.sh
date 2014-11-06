@@ -26,13 +26,16 @@ mkdir /home/vagrant/www
 cd /vagrant
 composer install --dev --prefer-dist --no-interaction --no-scripts
 
+# Since composer installs Magento into /vagrant/www we need to sync it once to the box
+cp -r /vagrant/www /home/vagrant/
+
 cd /home/vagrant
 # link project modman packages (src/modman imports others)
 modman link ./src
 modman deploy src --force
 
 # Use n98-magerun to set up Magento (database and local.xml)
-# use --noDownload if Magento core is deployed with modman or composer.
+# uses --noDownload because Magento core is deployed with composer.
 # Remove the line if there already is a configured Magento installation
 n98-magerun install --noDownload --dbHost="localhost" --dbUser="magento" --dbPass="root" --dbName="magento" --installSampleData=no --useDefaultConfigParams=yes --magentoVersionByName="$MAGENTO_VERSION" --installationFolder="www" --baseUrl="http://$DOMAIN/"
 

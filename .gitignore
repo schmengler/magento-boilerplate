@@ -1,7 +1,8 @@
 /.vagrant
 /.modman/*
 !/.modman/.basedir
-/www
+/www/*
+!/www/.gitkeep
 /vendor/*
 !/vendor/.gitkeep
 /var/*
