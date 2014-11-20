@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+MINIMAL LOCAL.XML FOR VAGRANTBOX, OVERWRITE ACCORDING TO YOUR INSTALLATION
+-->
+<config>
+    <global>
+        <install>
+            <date><![CDATA[]]></date>
+        </install>
+        <crypt>
+            <key><![CDATA[]]></key>
+        </crypt>
+        <disable_local_modules>false</disable_local_modules>
+        <resources>
+            <db>
+                <table_prefix><![CDATA[]]></table_prefix>
+            </db>
+            <default_setup>
+                <connection>
+                    <host><![CDATA[localhost]]></host>
+                    <username><![CDATA[root]]></username>
+                    <password><![CDATA[root]]></password>
+                    <dbname><![CDATA[magento]]></dbname>
+                    <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
+                    <model><![CDATA[mysql4]]></model>
+                    <type><![CDATA[pdo_mysql]]></type>
+                    <pdoType><![CDATA[]]></pdoType>
+                    <active>1</active>
+                </connection>
+            </default_setup>
+        </resources>
+</config>
