@@ -1,0 +1,9 @@
+[32mconfig.yaml has been generated. Before we create the box, check the following prerequisites:[0m
+
+[32m[0m A Magento installation should be placed in [1m{SOURCE_DIR}[0m - if you leave this directory empty, a fresh Magento CE is installed there. You can specify the version in [1mpuphpet/files/exec-once/70-install-magento.sh[0m
+
+[32m[0m If you want to import an existing database, put the gzipped SQL dump in [1msystemstorage/live/database/[0m - the latest *.sql.gz file in this directory will be imported.
+
+[32m[0m If you need additional packages for Linux/PHP/PECL/Ruby/Node, add them to [1mpuphpet/config.yaml[0m
+
+[1;33mIf you do not continue now, the next time you run {UP}, the box will be created immediately.[0m

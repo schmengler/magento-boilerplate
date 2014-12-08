@@ -1,5 +1,8 @@
 # files/db from live
-/live
+/live/*
+!/live/database
+/live/database/*
+!/live/database/.gitkeep
 
 # uncompressed sql files
 *.sql

@@ -3,7 +3,7 @@
 # This script uses n98-magerun to install a fresh Magento in the repository if it is not already there
 #
 DOMAIN=`cat /vagrant/etc/domain`
-MAGENTO_VERSION=magento-ce-1.9.0.1
+MAGENTO_VERSION=magento-ce-1.9.1.0
 INSTALL_DIR=/vagrant/`cat /vagrant/etc/src`
 
 if [ -f "$INSTALL_DIR/app/Mage.php" ]; then

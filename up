@@ -10,22 +10,30 @@ write_config_yaml() {
 		read -p "> " cmd
 		case $cmd in
 			[1]* )
-				configtemplate="allinone/config.yaml
-				while [ "$src" != "" ]; do
-					printf "\nSpecify Magento root directory:\n"
-					read -ep "> ./" src;
-				done
-				cp allinone/exec-once/* puphpet/files/exec-once/
+				template="allinone"
+				printf "\n\x1b[33mSpecify Magento root directory default: www)\x1b[32m\n"
+				read -ep "> ./" src;
+				if [ "$src" == "" ]; then
+					src="www"
+				fi
+				printf "\x1b[0m";
+				cp puphpet/templates/allinone/to-copy/* ./
 				break;;
 			[2]* )
-				configtemplate="modman/config.yaml";
-				cp modman/exec-once/* puphpet/files/exec-once/
+			template="modman"
+				src="src"
+				cp -ru puphpet/templates/modman/to-copy/* ./
 				break;;
 			* ) [ "$cmd" != "" ] && echo -e "\x1b[31mNot recognized template '$cmd'.\x1b[0m";;
 		esac
 	done
-	src=".\/$src"
-	sed -e "s/{DOMAIN}/`cat etc/domain`/" -e "s/{IP}/$ip/" -e "s/{SOURCE_DIR}/$src/" puphpet/templates/$configtemplate > puphpet/config.yaml
+	src="./$src"
+	echo $src > etc/src
+	#escape for sed:
+	src=$(sed -e 's/[\/&]/\\&/g' etc/src)
+	up=$(echo $0 | sed -e 's/[\/&]/\\&/g')
+	sed -e "s/{DOMAIN}/`cat etc/domain`/" -e "s/{IP}/$ip/" -e "s/{SOURCE_DIR}/$src/" puphpet/templates/$template/config.yaml > puphpet/config.yaml
+	cat puphpet/templates/$template/README.NFO | sed -e "s/{UP}/$up/" -e "s/{SOURCE_DIR}/$src/"
 }
 start_rsync_auto() {
 	printf "\x1b[34m\x1b[1mRsync shared folders...\x1b[0m\n"
@@ -74,17 +82,6 @@ if [ ! -f puphpet/config.yaml ]; then
 	ask_to_continue;
 	echo $domain > etc/domain
 	write_config_yaml
-	echo ""
-	printf "\x1b[32mconfig.yaml has been generated. Before we create the box, check the following prerequisites:\x1b[0m\n"
-	echo ""
-	printf " \x1b[32m►\x1b[0m Specify third party extensions in composer.json. Some recommended default extensions are already defined there. Remove them at will.\n\n"
-	printf " \x1b[32m►\x1b[0m If you have dependencies on private repositories, copy your SSH private key to 'puphpet/files/dot/.ssh/my_id_rsa'\n\n"
-	printf " \x1b[32m►\x1b[0m If you need to specify the Magento version or use code from an existing installation, change 'puphpet/files/exec-once/90-magento.sh' according to the comments\n\n"
-	printf " \x1b[32m►\x1b[0m If you need additional packages for Linux/PHP/PECL/Ruby/Node, add them to 'puphpet/config.yaml'\n\n"
-	echo ""
-	printf "\x1b[1;33mIf you continue witout any changes, a new Magento CE 1.9 will be installed with some default recommended extensions.\x1b[0m\n"
-	printf "\x1b[1;33mIf you do not continue now, the next time you run $0, the box will be created immediately.\x1b[0m\n"
-	echo ""
 	ask_to_continue;
 fi
 
