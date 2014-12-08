@@ -13,7 +13,8 @@
 		"avstudnitz/scopehint": "dev-master",
 		"avstudnitz/admin-notification-advanced": "dev-master",
 		"pulsestorm/system-search-config": "dev-master",
-		"mercator/PulsestormLauncher": "dev-b89227c6fe3dbf1d8abcec8815320f03748d33a1"
+		"mercator/PulsestormLauncher": "dev-mercator",
+		"firegento/debug": "dev-master"
     },
     "require-dev": {
 		"firegento/debug": "dev-master",
@@ -52,11 +53,11 @@
         },
         {
             "type": "git",
-            "url": "https://github.com/astorm/SystemConfigurationSearch"
+            "url": "https://github.com/astorm/SystemConfigurationSearch.git"
         },
         {
             "type": "git",
-            "url": "https://github.com/mercator/PulsestormLauncher"
+            "url": "https://github.com/mercator/PulsestormLauncher.git"
         },
 		{
 			"type": "git",

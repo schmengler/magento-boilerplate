@@ -29,4 +29,5 @@ MINIMAL LOCAL.XML FOR VAGRANTBOX, OVERWRITE ACCORDING TO YOUR INSTALLATION
                 </connection>
             </default_setup>
         </resources>
+	</global>
 </config>
