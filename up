@@ -17,7 +17,7 @@ write_config_yaml() {
 					src="www"
 				fi
 				printf "\x1b[0m";
-				cp puphpet/templates/allinone/to-copy/* ./
+				cp -ru puphpet/templates/allinone/to-copy/* ./
 				break;;
 			[2]* )
 			template="modman"
