@@ -1,21 +1,30 @@
 #!/bin/sh
 
-#
-# Specify a configuration template here. Currently available
-#
-# - config-modman.yaml: default structure with composer+modman
-# - config-allinone.yaml: complete Magento installation in one directory (specified by $src variable)
-#
-# TODO: interactive menu
-# TODO: different scripts depending on template
-# TODO: composer.json templates (or no composer.json at all for "allinone")
-#
-configtemplate="config-modman.yaml"
-src=".\/src"
-
-	
-	
 write_config_yaml() {
+	# TODO: different scripts depending on template
+	# TODO: composer.json templates (or no composer.json at all for "allinone")
+	while true; do
+		printf "\x1b[1mChoose a template:\x1b[0m\n"
+		printf "\x1b[32m[1]\x1b[33m All-in-one\n"
+		printf "\x1b[32m[2]\x1b[33m Composer+Modman\n"
+		read -p "> " cmd
+		case $cmd in
+			[1]* )
+				configtemplate="allinone/config.yaml
+				while [ "$src" != "" ]; do
+					printf "\nSpecify Magento root directory:\n"
+					read -ep "> ./" src;
+				done
+				cp allinone/exec-once/* puphpet/files/exec-once/
+				break;;
+			[2]* )
+				configtemplate="modman/config.yaml";
+				cp modman/exec-once/* puphpet/files/exec-once/
+				break;;
+			* ) [ "$cmd" != "" ] && echo -e "\x1b[31mNot recognized template '$cmd'.\x1b[0m";;
+		esac
+	done
+	src=".\/$src"
 	sed -e "s/{DOMAIN}/`cat etc/domain`/" -e "s/{IP}/$ip/" -e "s/{SOURCE_DIR}/$src/" puphpet/templates/$configtemplate > puphpet/config.yaml
 }
 start_rsync_auto() {
