@@ -19,5 +19,5 @@ fi
 ln -fs /vagrant/etc/local.xml /home/vagrant/www/app/etc/local.xml
 
 # Copy devbox index.php and .htaccess files from /etc into project sources
-cp /vagrant/etc/index.php /vagrant/www/index.php
-cp /vagrant/etc/.htaccess /vagrant/www/.htaccess
+[ -f "/vagrant/etc/index.php" ] && cp /vagrant/etc/index.php /vagrant/www/index.php
+[ -f "/vagrant/etc/.htaccess" ] && cp /vagrant/etc/.htaccess /vagrant/www/.htaccess
