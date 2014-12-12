@@ -42,8 +42,8 @@ vagrantfile-local:
                         - .git/
                         - /src
                     auto: 'true'
-                    owner: 'www-data'
-                    group: 'www-data'
+                owner: 'www-data'
+                group: 'www-data'
             7OsKjQpGX7UE:
                 source: ./vendor
                 target: /home/vagrant/vendor
@@ -56,8 +56,8 @@ vagrantfile-local:
                     exclude:
                         - .git/
                     auto: 'true'
-                    owner: 'www-data'
-                    group: 'www-data'
+                owner: 'www-data'
+                group: 'www-data'
             C2fAKjNZJRgG:
                 source: ./src
                 target: /home/vagrant/src
@@ -70,8 +70,8 @@ vagrantfile-local:
                     exclude:
                         - .git/
                     auto: 'true'
-                    owner: 'www-data'
-                    group: 'www-data'
+                owner: 'www-data'
+                group: 'www-data'
         usable_port_range:
             start: 10200
             stop: 10500

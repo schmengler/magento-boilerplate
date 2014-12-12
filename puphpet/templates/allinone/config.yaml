@@ -44,8 +44,8 @@ vagrantfile-local:
                         - /var/
                         - app/etc/local.xml
                     auto: 'true'
-                    owner: 'www-data'
-                    group: 'www-data'
+                owner: 'www-data'
+                group: 'www-data'
         usable_port_range:
             start: 10200
             stop: 10500

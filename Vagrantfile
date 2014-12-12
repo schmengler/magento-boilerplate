@@ -59,9 +59,6 @@ Vagrant.configure('2') do |config|
     end
 
     if hosts.any?
-      contents = File.open("#{dir}/puphpet/shell/ascii-art/hostmanager-notice.txt", 'r'){ |file| file.read }
-      puts "\n\033[32m#{contents}\033[0m\n"
-
       if config.vm.hostname.to_s.strip.length == 0
         config.vm.hostname = 'puphpet-dev-machine'
       end
@@ -80,6 +77,9 @@ Vagrant.configure('2') do |config|
 
   data['vm']['synced_folder'].each do |i, folder|
     if folder['source'] != '' && folder['target'] != ''
+      sync_owner = !folder['sync_owner'].nil? ? folder['sync_owner'] : 'www-data'
+      sync_group = !folder['sync_group'].nil? ? folder['sync_group'] : 'www-data'
+
       if folder['sync_type'] == 'nfs'
         config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}", type: 'nfs'
       elsif folder['sync_type'] == 'smb'
@@ -90,10 +90,13 @@ Vagrant.configure('2') do |config|
         rsync_exclude = !folder['rsync']['exclude'].nil? ? folder['rsync']['exclude'] : ['.vagrant/']
 
         config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}",
-          rsync__args: rsync_args, rsync__exclude: rsync_exclude, rsync__auto: rsync_auto, type: 'rsync', owner: "#{folder['rsync']['owner']}", group: "#{folder['rsync']['group']}"
+          rsync__args: rsync_args, rsync__exclude: rsync_exclude, rsync__auto: rsync_auto, type: 'rsync', group: sync_group, owner: sync_owner
+      elsif data['vm']['chosen_provider'] == 'parallels'
+        config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}",
+          group: sync_group, owner: sync_owner, mount_options: ['share']
       else
         config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}",
-          group: 'www-data', owner: 'www-data', mount_options: ['dmode=775', 'fmode=764']
+          group: sync_group, owner: sync_owner, mount_options: ['dmode=775', 'fmode=764']
       end
     end
   end
@@ -122,8 +125,11 @@ Vagrant.configure('2') do |config|
       virtualbox.customize ['modifyvm', :id, '--memory', "#{data['vm']['memory']}"]
       virtualbox.customize ['modifyvm', :id, '--cpus', "#{data['vm']['cpus']}"]
 
-      if data['vm']['hostname'].to_s.strip.length != 0
-        virtualbox.customize ['modifyvm', :id, '--name', config.vm.hostname]
+      if data['vm']['provider']['virtualbox']['modifyvm']['name'].nil? ||
+        data['vm']['provider']['virtualbox']['modifyvm']['name'].empty?
+        if data['vm']['hostname'].to_s.strip.length != 0
+          virtualbox.customize ['modifyvm', :id, '--name', config.vm.hostname]
+        end
       end
     end
   end
@@ -131,7 +137,7 @@ Vagrant.configure('2') do |config|
   if data['vm']['chosen_provider'] == 'vmware_fusion' || data['vm']['chosen_provider'] == 'vmware_workstation'
     ENV['VAGRANT_DEFAULT_PROVIDER'] = (data['vm']['chosen_provider'] == 'vmware_fusion') ? 'vmware_fusion' : 'vmware_workstation'
 
-    config.vm.provider 'vmware_fusion' do |v|
+    config.vm.provider :vmware_fusion do |v, override|
       data['vm']['provider']['vmware'].each do |key, value|
         if key == 'memsize'
           next
@@ -146,8 +152,11 @@ Vagrant.configure('2') do |config|
       v.vmx['memsize']  = "#{data['vm']['memory']}"
       v.vmx['numvcpus'] = "#{data['vm']['cpus']}"
 
-      if data['vm']['hostname'].to_s.strip.length != 0
-        v.vmx['displayName'] = config.vm.hostname
+      if data['vm']['provider']['vmware']['displayName'].nil? ||
+        data['vm']['provider']['vmware']['displayName'].empty?
+        if data['vm']['hostname'].to_s.strip.length != 0
+          v.vmx['displayName'] = config.vm.hostname
+        end
       end
     end
   end
@@ -170,8 +179,11 @@ Vagrant.configure('2') do |config|
       v.memory = "#{data['vm']['memory']}"
       v.cpus   = "#{data['vm']['cpus']}"
 
-      if data['vm']['hostname'].to_s.strip.length != 0
-        v.name = config.vm.hostname
+      if data['vm']['provider']['parallels']['name'].nil? ||
+        data['vm']['provider']['parallels']['name'].empty?
+        if data['vm']['hostname'].to_s.strip.length != 0
+          v.name = config.vm.hostname
+        end
       end
     end
   end
