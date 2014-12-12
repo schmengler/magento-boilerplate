@@ -200,7 +200,7 @@ xdebug:
         xdebug.remote_enable: '1'
         xdebug.remote_handler: 'dbgp'
         xdebug.remote_port: '9000'
-        xdebug.idekey: 'PHPSTORM' #remove if you need dynamic keys (i.e. for multiple sessions)
+        xdebug.idekey: 'xdebug' #remove if you need dynamic keys (i.e. for multiple sessions)
 xhprof:
     install: '0'
 drush:
