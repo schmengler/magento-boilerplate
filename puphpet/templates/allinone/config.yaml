@@ -30,6 +30,8 @@ vagrantfile-local:
                     - '--parser future'
         synced_folder:
             C2fAKjNZJRgG:
+                owner: 'www-data'
+                group: 'www-data'
                 source: {SOURCE_DIR}
                 target: /home/vagrant/www
                 sync_type: rsync
@@ -44,8 +46,6 @@ vagrantfile-local:
                         - /var/
                         - app/etc/local.xml
                     auto: 'true'
-                owner: 'www-data'
-                group: 'www-data'
         usable_port_range:
             start: 10200
             stop: 10500
@@ -71,6 +71,31 @@ server:
 firewall:
     install: '1'
     rules: null
+users_groups:
+    install: '1'
+    groups: {  }
+    users: {  }
+cron:
+    install: '1'
+    jobs:
+        0stpbybvwlzh:
+            monthday: ''
+            name: 'Magento Cronjob (Default)'
+            user: vagrant
+            command: 'php /var/www/{DOMAIN}/cron.php -mdefault'
+            minute: '*/1'
+            hour: '*'
+            weekday: '*'
+            month: '*'
+        9uzpoihjpoid:
+            monthday: ''
+            name: 'Magento Cronjob (Always)'
+            user: vagrant
+            command: 'php /var/www/{DOMAIN}/cron.php -malways'
+            minute: '*/1'
+            hour: '*'
+            weekday: '*'
+            month: '*'
 apache:
     install: '1'
     settings:

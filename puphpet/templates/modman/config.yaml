@@ -30,6 +30,8 @@ vagrantfile-local:
                     - '--parser future'
         synced_folder:
             SfJy0favbF8q:
+                owner: 'www-data'
+                group: 'www-data'
                 source: ./.modman
                 target: /home/vagrant/.modman
                 sync_type: rsync
@@ -42,9 +44,9 @@ vagrantfile-local:
                         - .git/
                         - /src
                     auto: 'true'
+            7OsKjQpGX7UE:
                 owner: 'www-data'
                 group: 'www-data'
-            7OsKjQpGX7UE:
                 source: ./vendor
                 target: /home/vagrant/vendor
                 sync_type: rsync
@@ -56,9 +58,9 @@ vagrantfile-local:
                     exclude:
                         - .git/
                     auto: 'true'
+            C2fAKjNZJRgG:
                 owner: 'www-data'
                 group: 'www-data'
-            C2fAKjNZJRgG:
                 source: ./src
                 target: /home/vagrant/src
                 sync_type: rsync
@@ -70,8 +72,6 @@ vagrantfile-local:
                     exclude:
                         - .git/
                     auto: 'true'
-                owner: 'www-data'
-                group: 'www-data'
         usable_port_range:
             start: 10200
             stop: 10500
@@ -97,6 +97,31 @@ server:
 firewall:
     install: '1'
     rules: null
+users_groups:
+    install: '1'
+    groups: {  }
+    users: {  }
+cron:
+    install: '1'
+    jobs:
+        0stpbybvwlzh:
+            monthday: ''
+            name: 'Magento Cronjob (Default)'
+            user: vagrant
+            command: 'php /var/www/{DOMAIN}/cron.php -mdefault'
+            minute: '*/1'
+            hour: '*'
+            weekday: '*'
+            month: '*'
+        9uzpoihjpoid:
+            monthday: ''
+            name: 'Magento Cronjob (Always)'
+            user: vagrant
+            command: 'php /var/www/{DOMAIN}/cron.php -malways'
+            minute: '*/1'
+            hour: '*'
+            weekday: '*'
+            month: '*'
 apache:
     install: '1'
     settings:
