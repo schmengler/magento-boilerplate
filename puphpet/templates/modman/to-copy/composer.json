@@ -12,16 +12,13 @@
 		"aoepeople/composer-installers": "dev-master",
 		"avstudnitz/scopehint": "dev-master",
 		"avstudnitz/admin-notification-advanced": "dev-master",
-		"pulsestorm/system-search-config": "dev-master",
 		"mercator/PulsestormLauncher": "dev-mercator",
 		"firegento/debug": "dev-master"
     },
     "require-dev": {
 		"firegento/debug": "dev-master",
- 		"fbrnc/aoe_profiler": "dev-master",
+ 		"aoepeople/aoe_profiler": "dev-master",
 		"aoepeople/aoe_templatehints": "dev-master",
-		"aoepeople/envsettingstool": "~1.0",
-        "sse/formfiller": "dev-master",
 		"jacquesbh/installer": "dev-master",
 		"ecomdev/ecomdev_phpunit": "*"
     },
