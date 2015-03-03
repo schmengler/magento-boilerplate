@@ -24,7 +24,7 @@ mkdir /home/vagrant/www
 # Extensions from Composer will be deployed after Magento has been installed
 # --no-scripts prevents modman deploy
 cd /vagrant
-composer install --dev --prefer-dist --no-interaction --no-scripts
+composer install --prefer-dist --no-interaction --no-scripts
 
 # Since composer installs Magento into /vagrant/www we need to sync it once to the box
 cp -r /vagrant/www /home/vagrant/
