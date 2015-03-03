@@ -1,7 +1,7 @@
 {
     "config": {
-        "bin-dir": "~/bin",
-		"vendor-dir": "vendor",
+        "bin-dir": "vendor/bin",
+		"vendor-dir": "vendor/composer",
 		"cache-dir": "/dev/shm"
     },
     "require": {
