@@ -4,6 +4,11 @@ MINIMAL LOCAL.XML FOR VAGRANTBOX, OVERWRITE ACCORDING TO YOUR INSTALLATION
 -->
 <config>
     <global>
+        <limesoda>
+            <environment>
+                <name>dev</name>
+            </environment>
+        </limesoda>
         <install>
             <date><![CDATA[]]></date>
         </install>

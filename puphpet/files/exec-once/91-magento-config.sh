@@ -25,6 +25,12 @@ n98-magerun config:set web/unsecure/base_url http://`cat /vagrant/etc/domain`/
 n98-magerun config:set google/analytics/active 0
 n98-magerun config:set google/analytics/account ""
 
+#
+# If you use LimeSoda_EnvironmentConfiguration, all above should be configured there and only
+# this command stays here:
+#
+#n98-magerun ls:env:configure dev
+
 # Admin user
 n98-magerun admin:user:delete --force admin
 n98-magerun admin:user:create admin admin@example.com test123 Achmed Admin

@@ -13,7 +13,8 @@
 		"avstudnitz/scopehint": "dev-master",
 		"avstudnitz/admin-notification-advanced": "dev-master",
 		"mercator/PulsestormLauncher": "dev-mercator",
-		"firegento/debug": "dev-master"
+		"firegento/debug": "dev-master",
+        "limesoda/limesoda_environment-configuration": "dev-master"
     },
     "require-dev": {
 		"firegento/debug": "dev-master",
@@ -40,18 +41,6 @@
 				}
 			}
 		},
-		{
-			"type": "vcs",
-			"url": "https://github.com/aoepeople/EnvSettingsTool"
-		},
-        {
-            "type": "git",
-            "url": "https://github.com/schmengler/FormFiller.git"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/astorm/SystemConfigurationSearch.git"
-        },
         {
             "type": "git",
             "url": "https://github.com/mercator/PulsestormLauncher.git"
