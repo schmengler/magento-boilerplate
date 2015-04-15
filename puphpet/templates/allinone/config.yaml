@@ -8,7 +8,7 @@ vagrantfile-local:
         cpus: '1'
         chosen_provider: virtualbox
         network:
-            private_network: {IP}
+            private_network: '{IP}'
             forwarded_port: {  }
         post_up_message: ''
         provider:
@@ -29,10 +29,10 @@ vagrantfile-local:
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            C2fAKjNZJRgG:
-                owner: 'www-data'
-                group: 'www-data'
-                source: {SOURCE_DIR}
+            DPLgudwyiTRs:
+                owner: www-data
+                group: www-data
+                source: '{SOURCE_DIR}'
                 target: /home/vagrant/www
                 sync_type: rsync
                 rsync:
@@ -56,7 +56,7 @@ vagrantfile-local:
         username: vagrant
         guest_port: null
         keep_alive: true
-        forward_agent: true
+        forward_agent: false
         forward_x11: false
         shell: 'bash -l'
     vagrant:
@@ -68,9 +68,6 @@ server:
         - libnss-mdns
         - curl
         - git
-firewall:
-    install: '1'
-    rules: null
 users_groups:
     install: '1'
     groups: {  }
@@ -78,7 +75,7 @@ users_groups:
 cron:
     install: '1'
     jobs:
-        0stpbybvwlzh:
+        syw5tits7oed:
             monthday: ''
             name: 'Magento Cronjob (Default)'
             user: vagrant
@@ -87,7 +84,7 @@ cron:
             hour: '*'
             weekday: '*'
             month: '*'
-        9uzpoihjpoid:
+        ixrk2utvdrnr:
             monthday: ''
             name: 'Magento Cronjob (Always)'
             user: vagrant
@@ -96,67 +93,68 @@ cron:
             hour: '*'
             weekday: '*'
             month: '*'
+firewall:
+    install: '1'
+    rules: {  }
 apache:
     install: '1'
     settings:
         user: www-data
         group: www-data
-        default_vhost: false
+        default_vhost: true
         manage_user: false
         manage_group: false
         sendfile: 0
     modules:
-        - rewrite
-        - headers
-        - proxy
+        - proxy_fcgi
         - deflate
-        - ssl
-        - info
         - expires
+        - headers
+        - info
+        - proxy
+        - rewrite
     vhosts:
-        IMQf46Yg8sej:
-            servername: {DOMAIN}
+        u57lkdl8n6hf:
+            servername: '{DOMAIN}'
             serveraliases:
-                - www.{DOMAIN}
-            docroot: /var/www/{DOMAIN}
+                - 'www.{DOMAIN}'
+            docroot: '/var/www/{DOMAIN}'
             port: '80'
             setenv:
                 - 'MAGE_IS_DEVELOPER_MODE 1'
-            override:
-                - All
-            options:
-                - Indexes
-                - FollowSymLinks
-                - MultiViews
-            engine: php
             custom_fragment: ''
-        KMQf46Yg8sej:
-            servername: {DOMAIN}
+            ssl_cert: ''
+            ssl_key: ''
+            ssl_chain: ''
+            ssl_certs_dir: ''
+        gff3fxpmfkpu:
+            servername: '{DOMAIN}'
             serveraliases:
-                - www.{DOMAIN}
-            docroot: /var/www/{DOMAIN}
+                - 'www.{DOMAIN}'
+            docroot: '/var/www/{DOMAIN}'
             port: '443'
             setenv:
                 - 'MAGE_IS_DEVELOPER_MODE 1'
-            override:
-                - All
-            options:
-                - Indexes
-                - FollowSymLinks
-                - MultiViews
-            engine: php
             custom_fragment: ''
             ssl: '1'
             ssl_cert: ''
             ssl_key: ''
             ssl_chain: ''
             ssl_certs_dir: ''
-    mod_pagespeed: 0
 nginx:
     install: '0'
+    settings:
+        default_vhost: 1
+        proxy_buffer_size: 128k
+        proxy_buffers: '4 256k'
+    upstreams: {  }
+    vhosts: {  }
 php:
     install: '1'
-    version: '54'
+    settings:
+        version: '54'
+    fpm_settings:
+        port: 9000
     composer: '1'
     composer_home: ''
     modules:
@@ -175,8 +173,6 @@ php:
         display_errors: On
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
-    timezone: Europe/Berlin
-    mod_php: 1
 hhvm:
     install: '0'
     nightly: 0
@@ -195,60 +191,68 @@ xdebug:
         xdebug.default_enable: '1'
         xdebug.remote_autostart: '0'
         xdebug.remote_connect_back: '0'
-        xdebug.remote_host: '10.0.2.2'
+        xdebug.remote_host: 10.0.2.2
         xdebug.remote_enable: '1'
-        xdebug.remote_handler: 'dbgp'
+        xdebug.remote_handler: dbgp
         xdebug.remote_port: '9000'
-        xdebug.idekey: 'xdebug' #remove if you need dynamic keys (i.e. for multiple sessions)
+        xdebug.idekey: xdebug
 xhprof:
     install: '0'
+wpcli:
+    install: '0'
+    version: ''
 drush:
     install: '0'
     version: 6.3.0
 ruby:
     install: '1'
     versions:
-        DpkZ48HviDFU:
+        A0mz1N3Ben21:
             version: ''
 nodejs:
     install: '0'
-    npm_packages: 
+    npm_packages:
         - grunt-cli
         - bower
 python:
     install: '1'
     packages: {  }
     versions:
-        6ODQtmtgD6wT:
+        BIox1tnac55S:
             version: ''
 mysql:
     install: '1'
-    root_password: root
+    settings:
+        version: '5.6'
+        root_password: 'root'
+        override_options: {  }
     adminer: 0
-    databases:
-        EbnA1Nv7oExd:
-            grant:
-                - ALL
+    users:
+        kXV7WQiYMVxx:
             name: magento
-            host: localhost
-            user: magento
             password: root
-            sql_file: ''
+    databases:
+        HEstDEIlxUxt:
+            name: magento
+            sql: ''
+    grants:
+        xljJ9PyTkUvi:
+            user: magento
+            table: magento
+            privileges:
+                - ALL
 postgresql:
     install: '0'
     settings:
-        root_password: '123'
-        user_group: postgres
-        encoding: UTF8
-        version: '9.3'
+        global:
+            encoding: UTF8
+            version: '9.3'
+        server:
+            postgres_password: ''
     databases: {  }
+    users: {  }
+    grants: {  }
     adminer: 0
-mariadb:
-    install: '0'
-    root_password: '123'
-    adminer: 0
-    databases: {  }
-    version: '10.0'
 sqlite:
     install: '1'
     adminer: 0
@@ -257,6 +261,7 @@ mongodb:
     install: '0'
     settings:
         auth: 1
+        bind_ip: 127.0.0.1
         port: '27017'
     databases: {  }
 redis:
@@ -288,9 +293,17 @@ rabbitmq:
     install: '0'
     settings:
         port: '5672'
+    users: {  }
+    vhosts: {  }
+    plugins: {  }
 elastic_search:
     install: '0'
     settings:
+        version: null
         java_install: true
-        autoupgrade: true
+solr:
+    install: '0'
+    settings:
+        version: ''
+        port: ''
 

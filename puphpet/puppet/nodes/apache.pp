@@ -1,257 +1,227 @@
-if $yaml_values == undef { $yaml_values = loadyaml('/vagrant/puphpet/config.yaml') }
+if $yaml_values == undef { $yaml_values = merge_yaml('/vagrant/puphpet/config.yaml', '/vagrant/puphpet/config-custom.yaml') }
 if $apache_values == undef { $apache_values = $yaml_values['apache'] }
 if $php_values == undef { $php_values = hiera_hash('php', false) }
 if $hhvm_values == undef { $hhvm_values = hiera_hash('hhvm', false) }
 
 include puphpet::params
+include puphpet::apache::params
 
-if hash_key_equals($apache_values, 'install', 1) {
-  include apache::params
+if array_true($apache_values, 'install') {
+  include ::apache::params
 
-  if hash_key_equals($php_values, 'install', 1) and hash_key_equals($php_values, 'mod_php', 1) {
-    $require_mod_php = true
-    $apache_version  = $apache::version::default
+  class { 'puphpet::apache::repo': }
+
+  $apache_version = '2.4'
+  $apache_modules = delete($apache_values['modules'], 'pagespeed')
+
+  if array_true($php_values, 'install') {
+    $php_engine    = true
+    $php_fcgi_port = access($php_values, 'fpm_settings.port')
+  } elsif array_true($hhvm_values, 'install') {
+    $php_engine    = true
+    $php_fcgi_port = access($hhvm_values, 'settings.port')
   } else {
-    $require_mod_php = false
-    $apache_version  = '2.4'
+    $php_engine    = false
   }
 
-  if ! $require_mod_php {
-    if $::operatingsystem == 'debian' {
-      apache_debian_repo{ 'do': }
-    } elsif $::operatingsystem == 'ubuntu' and $::lsbdistcodename == 'precise' {
-      apt::ppa { 'ppa:ondrej/apache2': require => Apt::Key['4F4EA0AAE5267A6C'] }
-    } elsif $::osfamily == 'redhat' {
-      apache_centos{ 'do': }
-    }
+  $mpm_module = 'worker'
+
+  $sethandler_string = $php_engine ? {
+    true    => "proxy:fcgi://127.0.0.1:${php_fcgi_port}",
+    default => 'default-handler'
   }
 
-  $webroot_location      = $puphpet::params::apache_webroot_location
-  $apache_provider_types = [
-    'virtualbox',
-    'vmware_fusion',
-    'vmware_desktop',
-    'parallels'
-  ]
+  $www_root      = $puphpet::apache::params::www_root
+  $webroot_user  = 'www-data'
+  $webroot_group = 'www-data'
 
-  exec { "mkdir -p ${webroot_location}":
-    creates => $webroot_location,
+  # centos 2.4 installation creates webroot automatically,
+  # requiring us to manually set owner and permissions via exec
+  exec { 'Create apache webroot':
+    command => "mkdir -p ${www_root} && \
+                chown root:${webroot_group} ${www_root} && \
+                chmod 775 ${www_root} && \
+                touch /.puphpet-stuff/apache-webroot-created",
+    creates => '/.puphpet-stuff/apache-webroot-created',
+    require => [
+      Group[$webroot_group],
+      Class['apache']
+    ],
   }
 
-  if downcase($::provisioner_type) in $apache_provider_types {
-    $webroot_location_group = 'www-data'
-    $vhost_docroot_group    = 'www-data'
-  } else {
-    $webroot_location_group = undef
-    $vhost_docroot_group    = 'www-user'
-  }
-
-  if ! defined(File[$webroot_location]) {
-    file { $webroot_location:
-      ensure  => directory,
-      group   => $webroot_location_group,
-      mode    => 0775,
-      require => [
-        Exec["mkdir -p ${webroot_location}"],
-        Group['www-data']
-      ],
-    }
-  }
-
-  if $require_mod_php {
-    $mpm_module           = 'prefork'
-    $disallowed_modules   = []
-    $apache_php_package   = 'php'
-    $fcgi_string          = ''
-  } elsif hash_key_equals($hhvm_values, 'install', 1) {
-    $mpm_module           = 'worker'
-    $disallowed_modules   = ['php']
-    $apache_php_package   = 'hhvm'
-    $fcgi_string          = "127.0.0.1:${hhvm_values['settings']['port']}"
-  } elsif hash_key_equals($php_values, 'install', 1) {
-    $mpm_module           = 'worker'
-    $disallowed_modules   = ['php']
-    $apache_php_package   = 'php-fpm'
-    $fcgi_string          = '127.0.0.1:9000'
-  } else {
-    $mpm_module           = 'prefork'
-    $disallowed_modules   = []
-    $apache_php_package   = ''
-    $fcgi_string          = ''
-  }
-
-  $sendfile = $apache_values['settings']['sendfile'] ? {
-    1       => 'On',
+  $sendfile = array_true($apache_values['settings'], 'sendfile') ? {
+    true    => 'On',
     default => 'Off'
   }
 
   $apache_settings = merge($apache_values['settings'], {
     'default_vhost'  => false,
     'mpm_module'     => $mpm_module,
-    'conf_template'  => $apache::params::conf_template,
+    'conf_template'  => $::apache::params::conf_template,
     'sendfile'       => $sendfile,
     'apache_version' => $apache_version
   })
 
   create_resources('class', { 'apache' => $apache_settings })
 
-  if $require_mod_php and ! defined(Class['apache::mod::php']) {
-    include apache::mod::php
-  } elsif ! $require_mod_php {
-    include puphpet::apache::fpm
-  }
-
-  if hash_key_equals($apache_values, 'mod_pagespeed', 1) {
-    class { 'puphpet::apache::modpagespeed': }
-  }
-
-  if hash_key_equals($hhvm_values, 'install', 1)
-    or hash_key_equals($php_values, 'install', 1)
-  {
-    $default_vhost_engine = 'php'
+  if $php_engine {
+    $default_vhost_directories = {'default' => {
+      'provider'        => 'directory',
+      'path'            => $puphpet::apache::params::default_vhost_dir,
+      'options'         => ['Indexes', 'FollowSymlinks', 'MultiViews'],
+      'allow_override'  => ['All'],
+      'require'         => ['all granted'],
+      'files_match'     => {'php_match' => {
+        'provider'   => 'filesmatch',
+        'path'       => '\.php$',
+        'sethandler' => $sethandler_string,
+      }},
+      'custom_fragment' => '',
+    }}
   } else {
-    $default_vhost_engine = undef
+    $default_vhost_directories = {'default' => {
+      'provider'        => 'directory',
+      'path'            => $puphpet::apache::params::default_vhost_dir,
+      'options'         => ['Indexes', 'FollowSymlinks', 'MultiViews'],
+      'allow_override'  => ['All'],
+      'require'         => ['all granted'],
+      'files_match'     => {},
+      'custom_fragment' => '',
+    }}
   }
 
-  if $apache_values['settings']['default_vhost'] == true {
-    $apache_vhosts = merge($apache_values['vhosts'], {
+  if array_true($apache_values['settings'], 'default_vhost') {
+    $apache_default_vhosts = {
       'default_vhost_80'  => {
         'servername'    => 'default',
-        'docroot'       => '/var/www/default',
+        'docroot'       => $puphpet::apache::params::default_vhost_dir,
         'port'          => 80,
+        'directories'   => $default_vhost_directories,
         'default_vhost' => true,
-        'engine'        => $default_vhost_engine,
       },
       'default_vhost_443' => {
         'servername'    => 'default',
-        'docroot'       => '/var/www/default',
+        'docroot'       => $puphpet::apache::params::default_vhost_dir,
         'port'          => 443,
+        'directories'   => $default_vhost_directories,
         'default_vhost' => true,
         'ssl'           => 1,
-        'engine'        => $default_vhost_engine,
       },
-    })
+    }
   } else {
-    $apache_vhosts = $apache_values['vhosts']
+    $apache_default_vhosts = {}
   }
 
-  if count($apache_vhosts) > 0 {
-    each( $apache_vhosts ) |$key, $vhost| {
-      exec { "exec mkdir -p ${vhost['docroot']} @ key ${key}":
-        command => "mkdir -p ${vhost['docroot']}",
-        creates => $vhost['docroot'],
-      }
+  # config file could contain no vhosts key
+  $apache_vhosts_merged = array_true($apache_values, 'vhosts') ? {
+    true    => merge($apache_values['vhosts'], $apache_default_vhosts),
+    default => $apache_default_vhosts,
+  }
 
-      if ! defined(File[$vhost['docroot']]) {
-        file { $vhost['docroot']:
-          ensure  => directory,
-          group   => $vhost_docroot_group,
-          mode    => 0765,
-          require => [
-            Exec["exec mkdir -p ${vhost['docroot']} @ key ${key}"],
-            Group['www-user']
-          ]
-        }
-      }
+  each( $apache_vhosts_merged ) |$key, $vhost| {
+    exec { "exec mkdir -p ${vhost['docroot']} @ key ${key}":
+      command => "mkdir -m 775 -p ${vhost['docroot']}",
+      user    => $webroot_user,
+      group   => $webroot_group,
+      creates => $vhost['docroot'],
+      require => Exec['Create apache webroot'],
+    }
 
-      $vhost_merged = delete(merge($vhost, {
-        'custom_fragment' => template('puphpet/apache/custom_fragment.erb'),
-        'directories'     => values_no_error($vhost['directories']),
-        'ssl'             => 'ssl' in $vhost and str2bool($vhost['ssl']) ? { true => true, default => false },
-        'ssl_cert'        => hash_key_true($vhost, 'ssl_cert')      ? { true => $vhost['ssl_cert'],      default => $puphpet::params::ssl_cert_location },
-        'ssl_key'         => hash_key_true($vhost, 'ssl_key')       ? { true => $vhost['ssl_key'],       default => $puphpet::params::ssl_key_location },
-        'ssl_chain'       => hash_key_true($vhost, 'ssl_chain')     ? { true => $vhost['ssl_chain'],     default => undef },
-        'ssl_certs_dir'   => hash_key_true($vhost, 'ssl_certs_dir') ? { true => $vhost['ssl_certs_dir'], default => undef }
-      }), 'engine')
+    $ssl = array_true($vhost, 'ssl')
 
-      create_resources(apache::vhost, { "${key}" => $vhost_merged })
+    $ssl_cert = array_true($vhost, 'ssl_cert') ? {
+      true    => $vhost['ssl_cert'],
+      default => $puphpet::params::ssl_cert_location
+    }
 
-      if ! defined(Firewall["100 tcp/${vhost['port']}"]) {
-        firewall { "100 tcp/${vhost['port']}":
-          port   => $vhost['port'],
-          proto  => tcp,
-          action => 'accept',
-        }
-      }
+    $ssl_key = array_true($vhost, 'ssl_key') ? {
+      true    => $vhost['ssl_key'],
+      default => $puphpet::params::ssl_key_location
+    }
+
+    $ssl_chain = array_true($vhost, 'ssl_chain') ? {
+      true    => $vhost['ssl_chain'],
+      default => undef
+    }
+
+    $ssl_certs_dir = array_true($vhost, 'ssl_certs_dir') ? {
+      true    => $vhost['ssl_certs_dir'],
+      default => undef
+    }
+
+    if array_true($vhost, 'directories') {
+      $directories_hash   = $vhost['directories']
+      $files_match        = template('puphpet/apache/files_match.erb')
+      $directories_merged = merge($vhost['directories'], hash_eval($files_match))
+    } else {
+      $directories_merged = {}
+    }
+
+    $vhost_custom_fragment = array_true($vhost, 'custom_fragment') ? {
+      true    => file($vhost['custom_fragment']),
+      default => '',
+    }
+
+    $vhost_merged = merge($vhost, {
+      'directories'     => values_no_error($directories_merged),
+      'ssl'             => $ssl,
+      'ssl_cert'        => $ssl_cert,
+      'ssl_key'         => $ssl_key,
+      'ssl_chain'       => $ssl_chain,
+      'ssl_certs_dir'   => $ssl_certs_dir,
+      'custom_fragment' => $vhost_custom_fragment,
+      'manage_docroot'  => false
+    })
+
+    create_resources(::apache::vhost, { "${key}" => $vhost_merged })
+
+    if ! defined(Puphpet::Firewall::Port[$vhost['port']]) {
+      puphpet::firewall::port { $vhost['port']: }
     }
   }
 
-
-  if $::osfamily == 'debian' and ! $require_mod_php {
-    file { ['/var/run/apache2/ssl_mutex']:
+  if $::osfamily == 'debian' {
+    file { '/var/run/apache2/ssl_mutex':
       ensure  => directory,
-      group   => 'www-data',
-      mode    => 0775,
+      group   => $webroot_group,
+      mode    => '0775',
       require => Class['apache'],
       notify  => Service['httpd'],
     }
   }
 
-  if ! defined(Firewall['100 tcp/443']) {
-    firewall { '100 tcp/443':
-      port   => 443,
-      proto  => tcp,
-      action => 'accept',
-    }
+  if ('proxy_fcgi' in $apache_values['modules']) {
+    include puphpet::apache::proxy_fcgi
   }
 
-  if count($apache_values['modules']) > 0 {
-    apache_mod { $apache_values['modules']: }
+  # mod_pagespeed needs some extra love
+  if 'pagespeed' in $apache_values['modules'] {
+    class { 'puphpet::apache::modpagespeed': }
+  }
+
+  each( $apache_modules ) |$module| {
+    if ! defined(Apache::Mod[$module]) {
+      apache::mod { $module: }
+    }
   }
 
   class { 'puphpet::ssl_cert':
     require => Class['apache'],
     notify  => Service['httpd'],
   }
-}
 
-define apache_debian_repo {
-  apt::source { 'd7031.de':
-    location          => 'http://www.d7031.de/debian/',
-    release           => 'wheezy-experimental',
-    repos             => 'main',
-    required_packages => 'debian-keyring debian-archive-keyring',
-    key               => '9EB5E8A3DF17D0B3',
-    key_server        => 'hkp://keyserver.ubuntu.com:80',
-    include_src       => true
-  }
-}
+  $default_vhost_index_file =
+    "${puphpet::apache::params::default_vhost_dir}/index.html"
 
-define apache_centos {
-  $httpd_url               = 'http://repo.puphpet.com/centos/httpd24/httpd-2.4.10-RPM-full.x86_64.tgz'
-  $httpd_download_location = '/.puphpet-stuff/httpd-2.4.10-RPM-full.x86_64.tgz'
-  $httpd_tar               = "tar xzvf '${httpd_download_location}'"
-  $extract_location        = '/.puphpet-stuff/httpd-2.4.10-RPM-full.x86_64'
-
-  exec { 'download httpd-2.4.10':
-    creates => $httpd_download_location,
-    command => "wget --quiet --tries=5 --connect-timeout=10 -O '${httpd_download_location}' '${httpd_url}'",
-    timeout => 3600,
-    path    => '/usr/bin',
-  } ->
-  exec { 'untar httpd-2.4.10':
-    creates => $extract_location,
-    command => $httpd_tar,
-    cwd     => '/.puphpet-stuff',
-    path    => '/bin',
-  } ->
-  exec { 'install httpd-2.4.10':
-    creates => '/etc/httpd',
-    command => 'yum -y localinstall * --skip-broken',
-    cwd     => $extract_location,
-    path    => '/usr/bin',
-  }
-
-  exec { 'rm /etc/httpd/conf.d/systemd.load':
-    path    => ['/usr/bin', '/usr/sbin', '/bin'],
-    onlyif  => 'test -f /etc/httpd/conf.d/systemd.load',
-    require => Class['apache'],
-    notify  => Service['httpd'],
-  }
-}
-
-define apache_mod {
-  if ! defined(Class["apache::mod::${name}"]) and !($name in $disallowed_modules) {
-    class { "apache::mod::${name}": }
+  if ! defined(File[$default_vhost_index_file]) {
+    file { $default_vhost_index_file:
+      ensure  => present,
+      owner   => 'root',
+      group   => $webroot_group,
+      mode    => '0664',
+      source  => 'puppet:///modules/puphpet/webserver_landing.erb',
+      replace => true,
+      require => Exec['Create apache webroot'],
+    }
   }
 }

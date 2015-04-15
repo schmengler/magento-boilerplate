@@ -1,9 +1,18 @@
-require 'yaml'
-
 dir = File.dirname(File.expand_path(__FILE__))
+vagrant_home = (ENV['VAGRANT_HOME'].to_s.split.join.length > 0) ? ENV['VAGRANT_HOME'] : "#{ENV['HOME']}/.vagrant.d"
+vagrant_dot  = (ENV['VAGRANT_DOTFILE_PATH'].to_s.split.join.length > 0) ? ENV['VAGRANT_DOTFILE_PATH'] : "#{dir}/.vagrant"
+
+require 'yaml'
+require "#{dir}/puphpet/ruby/deep_merge.rb"
 
 configValues = YAML.load_file("#{dir}/puphpet/config.yaml")
-data         = configValues['vagrantfile-local']
+
+if File.file?("#{dir}/puphpet/config-custom.yaml")
+  custom = YAML.load_file("#{dir}/puphpet/config-custom.yaml")
+  configValues.deep_merge!(custom)
+end
+
+data = configValues['vagrantfile-local']
 
 Vagrant.require_version '>= 1.6.0'
 
@@ -21,7 +30,7 @@ Vagrant.configure('2') do |config|
 
   data['vm']['network']['forwarded_port'].each do |i, port|
     if port['guest'] != '' && port['host'] != ''
-      config.vm.network :forwarded_port, guest: port['guest'].to_i, host: port['host'].to_i
+      config.vm.network :forwarded_port, guest: port['guest'].to_i, host: port['host'].to_i, auto_correct: true
     end
   end
 
@@ -77,13 +86,13 @@ Vagrant.configure('2') do |config|
 
   data['vm']['synced_folder'].each do |i, folder|
     if folder['source'] != '' && folder['target'] != ''
-      sync_owner = !folder['sync_owner'].nil? ? folder['sync_owner'] : 'www-data'
-      sync_group = !folder['sync_group'].nil? ? folder['sync_group'] : 'www-data'
+      sync_owner = !folder['owner'].nil? ? folder['owner'] : 'www-data'
+      sync_group = !folder['group'].nil? ? folder['group'] : 'www-data'
 
       if folder['sync_type'] == 'nfs'
         if Vagrant.has_plugin?('vagrant-bindfs')
           config.vm.synced_folder "#{folder['source']}", "/mnt/vagrant-#{i}", id: "#{i}", type: 'nfs'
-          config.bindfs.bind_folder "/mnt/vagrant-#{i}", "#{folder['target']}", user: sync_owner, group: sync_group
+          config.bindfs.bind_folder "/mnt/vagrant-#{i}", "#{folder['target']}", owner: sync_owner, group: sync_group, perms: "u=rwX:g=rwX:o=rD"
         else
           config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}", type: 'nfs'
         end
@@ -101,7 +110,7 @@ Vagrant.configure('2') do |config|
           group: sync_group, owner: sync_owner, mount_options: ['share']
       else
         config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}",
-          group: sync_group, owner: sync_owner, mount_options: ['dmode=775', 'fmode=764']
+          group: sync_group, owner: sync_owner, mount_options: ['dmode=775', 'fmode=774']
       end
     end
   end
@@ -235,13 +244,13 @@ Vagrant.configure('2') do |config|
   end
   config.vm.provision :shell, :path => 'puphpet/shell/important-notices.sh'
 
-  customKey  = "#{dir}/files/dot/ssh/id_rsa"
-  vagrantKey = "#{dir}/.vagrant/machines/default/#{ENV['VAGRANT_DEFAULT_PROVIDER']}/private_key"
+  customKey  = "#{dir}/puphpet/files/dot/ssh/id_rsa"
+  vagrantKey = "#{vagrant_dot}/machines/default/#{ENV['VAGRANT_DEFAULT_PROVIDER']}/private_key"
 
   if File.file?(customKey)
     config.ssh.private_key_path = [
       customKey,
-      "#{ENV['HOME']}/.vagrant.d/insecure_private_key"
+      "#{vagrant_home}/insecure_private_key"
     ]
 
     if File.file?(vagrantKey) and ! FileUtils.compare_file(customKey, vagrantKey)
@@ -285,5 +294,4 @@ Vagrant.configure('2') do |config|
     config.vagrant.host = data['vagrant']['host'].gsub(':', '').intern
   end
 end
-
 

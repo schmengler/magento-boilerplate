@@ -50,8 +50,8 @@ class puphpet::hhvm(
       }
     }
     'centos': {
-      $require = defined(Class['my_fw::post']) ? {
-        true    => Class['my_fw::post'],
+      $require = defined(Class['puphpet::firewall::post']) ? {
+        true    => Class['puphpet::firewall::post'],
         default => [],
       }
 
@@ -71,7 +71,7 @@ class puphpet::hhvm(
     }
   }
   if $real_webserver == 'apache2' {
-    include ::puphpet::apache::fpm
+    include puphpet::apache::proxy_fcgi
   }
 
   $os = downcase($::operatingsystem)
