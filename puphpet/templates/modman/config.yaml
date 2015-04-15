@@ -149,6 +149,19 @@ apache:
             setenv:
                 - 'MAGE_IS_DEVELOPER_MODE 1'
             custom_fragment: ''
+            directories:
+                dynausnskjm4:
+                    provider: directory
+                    path: /var/www/{DOMAIN}.local
+                    options:
+                        - Indexes
+                        - FollowSymlinks
+                        - MultiViews
+                    allow_override:
+                        - All
+                    require:
+                        - all granted
+                    custom_fragment: ''
             ssl_cert: ''
             ssl_key: ''
             ssl_chain: ''
@@ -162,6 +175,19 @@ apache:
             setenv:
                 - 'MAGE_IS_DEVELOPER_MODE 1'
             custom_fragment: ''
+            directories:
+                dynausnskjm4:
+                    provider: directory
+                    path: /var/www/{DOMAIN}.local
+                    options:
+                        - Indexes
+                        - FollowSymlinks
+                        - MultiViews
+                    allow_override:
+                        - All
+                    require:
+                        - all granted
+                    custom_fragment: ''
             ssl: '1'
             ssl_cert: ''
             ssl_key: ''
@@ -264,7 +290,7 @@ mysql:
     grants:
         xljJ9PyTkUvi:
             user: magento
-            table: magento
+            table: magento.*
             privileges:
                 - ALL
 postgresql:
