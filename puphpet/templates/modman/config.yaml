@@ -162,6 +162,12 @@ apache:
                     require:
                         - all granted
                     custom_fragment: ''
+                    files_match:
+                        gqbzshteei60:
+                            provider: filesmatch
+                            path: \.php$
+                            sethandler: 'proxy:fcgi://127.0.0.1:9000'
+                            custom_fragment: ''
             ssl_cert: ''
             ssl_key: ''
             ssl_chain: ''
@@ -188,6 +194,12 @@ apache:
                     require:
                         - all granted
                     custom_fragment: ''
+                    files_match:
+                        gqbzshteei60:
+                            provider: filesmatch
+                            path: \.php$
+                            sethandler: 'proxy:fcgi://127.0.0.1:9000'
+                            custom_fragment: ''
             ssl: '1'
             ssl_cert: ''
             ssl_key: ''
