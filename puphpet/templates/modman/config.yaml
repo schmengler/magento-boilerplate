@@ -152,7 +152,7 @@ apache:
             directories:
                 dynausnskjm4:
                     provider: directory
-                    path: /var/www/{DOMAIN}.local
+                    path: /var/www/{DOMAIN}
                     options:
                         - Indexes
                         - FollowSymlinks
@@ -184,7 +184,7 @@ apache:
             directories:
                 dynausnskjm4:
                     provider: directory
-                    path: /var/www/{DOMAIN}.local
+                    path: /var/www/{DOMAIN}
                     options:
                         - Indexes
                         - FollowSymlinks
