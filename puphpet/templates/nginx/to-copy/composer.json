@@ -1,0 +1,68 @@
+{
+  "config": {
+    "bin-dir": "vendor/bin",
+    "vendor-dir": "vendor/composer",
+    "cache-dir": "/dev/shm"
+  },
+  "require": {
+    "php": ">=5.3.0",
+    "magento/ce": "1.9.2.1",
+    "riconeitzel/german-localepack-de-de": "dev-preview",
+    "firegento/magesetup": "dev-master",
+    "aoepeople/composer-installers": "dev-master",
+    "avstudnitz/scopehint": "dev-master",
+    "avstudnitz/admin-notification-advanced": "dev-master",
+    "mercator/PulsestormLauncher": "dev-mercator",
+    "firegento/debug": "dev-master",
+    "limesoda/limesoda_environment-configuration": "dev-master"
+  },
+  "require-dev": {
+    "firegento/debug": "dev-master",
+    "aoepeople/aoe_profiler": "dev-master",
+    "aoepeople/aoe_templatehints": "dev-master",
+    "jacquesbh/installer": "dev-master",
+    "ecomdev/ecomdev_phpunit": "*"
+  },
+  "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://packages.firegento.com"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "magento/ce",
+        "version": "1.9.2.1",
+        "type": "magento-source",
+        "dist": {
+          "url": "http://magento.mageprofis.de/magento-1.9.2.1.tar.gz",
+          "type": "tar"
+        }
+      }
+    },
+    {
+      "type": "git",
+      "url": "https://github.com/mercator/PulsestormLauncher.git"
+    },
+    {
+      "type": "git",
+      "url": "https://github.com/jacquesbh/installer.git"
+    }
+  ],
+  "extra": {
+    "magento-root-dir": "/home/vagrant/www/",
+    "installer-paths": {
+      "www/": [
+        "type:magento-source"
+      ],
+      ".modman/{$name}/": [
+        "type:magento-module"
+      ]
+    }
+  },
+  "scripts": {
+    "post-install-cmd": "bin/package2modman.sh",
+    "post-update-cmd": "bin/package2modman.sh"
+  }
+}

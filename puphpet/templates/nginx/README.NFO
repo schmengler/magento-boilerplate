@@ -1,0 +1,14 @@
+[32mconfig.yaml has been generated. Before we create the box, check the following prerequisites:[0m
+
+[32m[0m Specify third party extensions in composer.json. Some recommended default extensions are already defined there. Remove them at will.
+
+[32m[0m If you have dependencies on private repositories, copy your SSH private key to [1mpuphpet/files/dot/.ssh/my_id_rsa[0m (file name must end in _id_rsa)
+
+[32m[0m If you need to specify the Magento version or use code from an existing installation, change [1mpuphpet/files/exec-once/90-magento.sh[0m according to the comments
+
+[32m[0m If you want to import an existing database, put the gzipped SQL dump in [1msystemstorage/live/database/[0m - the latest *.sql.gz file in this directory will be imported.
+
+[32m[0m If you need additional packages for Linux/PHP/PECL/Ruby/Node, add them to [1mpuphpet/config.yaml[0m
+
+[1;33mIf you continue witout any changes, a new Magento CE 1.9 will be installed with some default recommended extensions.[0m
+[1;33mIf you do not continue now, the next time you run {UP}, the box will be created immediately.[0m
