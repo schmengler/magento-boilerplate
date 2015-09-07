@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 write_config_yaml() {
 	# TODO: different scripts depending on template
@@ -7,6 +7,7 @@ write_config_yaml() {
 		printf "\x1b[1mChoose a template:\x1b[0m\n"
 		printf "\x1b[32m[1]\x1b[33m All-in-one\n"
 		printf "\x1b[32m[2]\x1b[33m Composer+Modman\n"
+		printf "\x1b[32m[3]\x1b[33m Composer+Modman+NginX\n"
 		read -p "> " cmd
 		case $cmd in
 			[1]* )
@@ -23,6 +24,11 @@ write_config_yaml() {
 			template="modman"
 				src="src"
 				cp -ru puphpet/templates/modman/to-copy/* ./
+				break;;
+			[3]* )
+			template="nginx"
+				src="src"
+				cp -ru puphpet/templates/nginx/to-copy/* ./
 				break;;
 			* ) [ "$cmd" != "" ] && echo -e "\x1b[31mNot recognized template '$cmd'.\x1b[0m";;
 		esac
