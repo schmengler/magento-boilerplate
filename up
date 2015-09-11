@@ -18,17 +18,17 @@ write_config_yaml() {
 					src="www"
 				fi
 				printf "\x1b[0m";
-				cp -ru puphpet/templates/allinone/to-copy/* ./
+				cp -r puphpet/templates/allinone/to-copy/* ./
 				break;;
 			[2]* )
 			template="modman"
 				src="src"
-				cp -ru puphpet/templates/modman/to-copy/* ./
+				cp -r puphpet/templates/modman/to-copy/* ./
 				break;;
 			[3]* )
 			template="nginx"
 				src="src"
-				cp -ru puphpet/templates/nginx/to-copy/* ./
+				cp -r puphpet/templates/nginx/to-copy/* ./
 				break;;
 			* ) [ "$cmd" != "" ] && echo -e "\x1b[31mNot recognized template '$cmd'.\x1b[0m";;
 		esac
