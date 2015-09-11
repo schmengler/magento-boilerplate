@@ -50,5 +50,6 @@ alias rm='rm -i'
 alias mv='mv -iv'
 alias grep='grep --color=auto -in'
 alias ..='cd ..'
+alias magerun='n98-magerun'
 
 source /usr/local/rvm/scripts/rvm

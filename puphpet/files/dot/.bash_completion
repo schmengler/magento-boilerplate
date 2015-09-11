@@ -1,0 +1,76 @@
+# Modman bash completion
+_modman()
+{
+	local cur prev opts mm module
+	COMPREPLY=()
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[COMP_CWORD-1]}"
+	if [ $COMP_CWORD -eq 1 ]; then prev='modman'; fi
+	mm=$(_modman_get_mm)
+	module=$(_modman_get_module)
+	case "${prev}" in
+		modman)
+			opts="init --help --version --tutorial"
+			if [ -n "$mm" ]; then
+				opts="${opts} list status incoming update-all deploy-all repair clean"
+				opts="${opts} checkout clone hgclone link undeploy skip unskip deploy update remove automodman"
+			fi
+			;;
+		init | --help | --version | --tutorial | list | status | incoming | repair | clean | --force | --copy)
+			opts=""
+			;;
+		update-all | deploy-all | checkout | clone | hgclone | link)
+			opts="--force --no-clean --no-local"
+			;;
+		deploy | update)
+			opts="$(modman list) --force --no-clean --no-local --no-shell"
+			;;
+		remove | automodman | undeploy)
+			opts=$(modman list)
+			;;
+		*)
+			[ -d "$mm/${prev}" ] && opts="--force --no-clean --no-local --no-shell"
+			;;
+	esac
+	COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+	return 0
+}
+
+_modman_get_mm()
+{
+	local root _pwd
+	_pwd=$(pwd)
+	root=$(pwd -P)
+	while ! [ -d $root/.modman ]; do
+		if [ "$root" = "/" ]; then
+			cd $_pwd && return 1
+		fi
+		cd ..
+		root=`pwd`
+	done
+	cd $_pwd
+	echo "$root/.modman"
+}
+
+_modman_get_module()
+{
+	local root module modpath mm _pwd
+	_pwd=`pwd`
+	mm=$(_modman_get_mm)
+	[ -z "$mm" ] && return 1
+	root="$(dirname $mm)"
+	module=''
+	while [ "$root" != "$(pwd)" ]; do
+		modpath=`pwd`
+		if [ "$mm" = "$(dirname $modpath)" ]; then
+			module=$(basename $modpath)
+			break
+		fi
+		cd ..
+	done
+	cd $_pwd
+	[ -z "$module" ] && return 1
+	echo $module
+}
+
+complete -F _modman modman

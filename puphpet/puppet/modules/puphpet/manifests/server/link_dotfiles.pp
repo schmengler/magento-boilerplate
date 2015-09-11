@@ -19,6 +19,12 @@ define puphpet::server::link_dotfiles {
     require => Exec['dotfiles'],
   }
 
+  file_line { 'link ~/.bash_completion':
+    line    => 'if [ -f ~/.bash_completion ] ; then source ~/.bash_completion; fi',
+    path    => "${user_home}/.bash_completion",
+    require => Exec['dotfiles'],
+  }
+
   if $::ssh_username != 'root' {
     file_line { 'link ~/.bash_git for root':
       ensure  => present,
